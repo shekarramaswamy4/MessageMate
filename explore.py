@@ -10,7 +10,7 @@ cur = conn.cursor()
 # for name in cur.fetchall():
     # print(name)
 
-cols = pd.read_sql_query("SELECT c.name FROM pragma_table_info('message') c", conn)
+cols = pd.read_sql_query("SELECT c.name FROM pragma_table_info('chat') c", conn)
 pd.set_option("display.max_rows", None, "display.max_columns", None)
 print(cols)
 
@@ -22,21 +22,20 @@ print("-")
 # chat_identifier
 messages = pd.read_sql_query("""SELECT
     chat.chat_identifier,
-    count(chat.chat_identifier) AS message_count
+    message.text,
+    datetime (message.date / 1000000000 + strftime ("%s", "2001-01-01"), "unixepoch", "localtime") AS message_date
 FROM
     chat
     JOIN chat_message_join ON chat. "ROWID" = chat_message_join.chat_id
     JOIN message ON chat_message_join.message_id = message. "ROWID"
-GROUP BY
-    chat.chat_identifier
 ORDER BY
-    message_count DESC;""", conn)
+    message_date ASC;""", conn)
 print(messages)
 
 ######
 cc = sqlite3.connect("/Users/shekarramaswamy/Library/ApplicationSupport/AddressBook/Sources/58BDEBE3-DA9B-4BF3-A9CB-E5A17F4BC2CC/AddressBook-v22.abcddb")
-tables = pd.read_sql_query("select name from sqlite_master where type='table'", cc)
-print(tables)
+# tables = pd.read_sql_query("select name from sqlite_master where type='table'", cc)
+# print(tables)
 
 # Gives name, ID
 contacts = pd.read_sql_query("select ZSORTINGFIRSTNAME, Z_PK from ZABCDRECORD order by Z_PK asc limit 10", cc)
