@@ -1,17 +1,54 @@
 import sqlite3
 import pandas as pd
+import os
+import plistlib
+
 from utils import format_tel
 
+id_to_name = {}
+num_to_name = {}
+
+# Going to parse abcdp files first and add to dictionary
+abcdp_dirs = [
+    "/Users/shekarramaswamy/Library/ApplicationSupport/AddressBook/Sources/58BDEBE3-DA9B-4BF3-A9CB-E5A17F4BC2CC/Metadata"
+]
+for cdir in abcdp_dirs:
+    mkdir_cmd = "mkdir " + cdir + "/tmp"
+    cp_cmd = "cp " + cdir + "/*.abcdp " + cdir + "/tmp"
+    rm_cmd = "rm -rf " + cdir + "/tmp"
+
+    os.system(mkdir_cmd)
+    os.system(cp_cmd)
+    count = 0
+    for filename in os.listdir(cdir + "/tmp/"):
+        full_path = os.path.join(cdir +"/tmp/", filename)
+        os.system("plutil -convert xml1 " + full_path) # Prepare file to be read in xml
+
+        f = open(full_path)
+        data = bytes(f.read(), 'utf-8')
+
+        try:
+            parsed = plistlib.loads(data)
+            first = parsed["First"]
+            last = parsed["Last"] if "Last" in parsed else ""
+            number = parsed["Phone"]["values"][0]
+
+            formatted_num = format_tel(number)
+            if formatted_num is None:
+                continue
+            num_to_name[number] = first + " " + last
+        except:
+            pass
+            # Log this
+
+    os.system(rm_cmd)
+
+# Parse address books
 address_books = [
     "/Users/shekarramaswamy/Library/ApplicationSupport/AddressBook/Sources/58BDEBE3-DA9B-4BF3-A9CB-E5A17F4BC2CC/AddressBook-v22.abcddb",
     "/Users/shekarramaswamy/Library/ApplicationSupport/AddressBook/Sources/1675CD53-E9F2-46BF-9DE1-12EF837D05BB/AddressBook-v22.abcddb"
 ]
-# Connect to contacts
-# tables = pd.read_sql_query("select name from sqlite_master where type='table'", cc)
-# print(tables)
 
-id_to_name = {}
-num_to_name = {}
 for a in address_books:
     cc = sqlite3.connect(a)
     cur = cc.cursor()
@@ -31,25 +68,25 @@ for a in address_books:
                 formatted_num = format_tel(row[0])
                 if formatted_num is None:
                     # Log this
-                    break
+                    continue 
                 num_to_name[format_tel(row[0])] = id_to_name[row[1]]
             else:
                 # Log this
                 pass
-
-# substitute username with your username
-conn = sqlite3.connect('/Users/shekarramaswamy/Library/Messages/chat.db')
+        else:
+            print(row[1])
 
 # Connect to chats database
+conn = sqlite3.connect('/Users/shekarramaswamy/Library/Messages/chat.db')
 cur = conn.cursor()
 # get the names of the tables in the database
 # cur.execute("select name from sqlite_master where type = 'table'") 
 # for name in cur.fetchall():
     # print(name)
 
-cols = pd.read_sql_query("SELECT c.name FROM pragma_table_info('chat') c", conn)
-pd.set_option("display.max_rows", None, "display.max_columns", None)
-print(cols)
+# cols = pd.read_sql_query("SELECT c.name FROM pragma_table_info('chat') c", conn)
+# pd.set_option("display.max_rows", None, "display.max_columns", None)
+# print(cols)
 
 # messages = pd.read_sql_query("select text from message limit 10", conn)
 # print(messages)
