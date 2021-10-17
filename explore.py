@@ -95,6 +95,7 @@ def score_contact(key, chats):
             return 0
     return 1
 
+# Open system preferences: open "x-apple.systempreferences:com.apple.preference.security?Privacy"
 # Send notifications via apple script: osascript -e 'display notification "hello world!" with title "Greeting" subtitle "More text" sound name "Submarine"'
 
 data = fetch_and_format_message_data()
