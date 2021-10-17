@@ -108,12 +108,56 @@ def fetch_and_format_message_data():
 def run_suggestions(contact_messages: List[ContactMessageHistory]):
     for cm in contact_messages:
         if score_contact(cm) == 1:
+            # TODO: add more data about the person
             print(cm.name)
 
-def score_contact(cm: ContactMessageHistory):
+# Recent burst defines the last set of messages from the contact that was sent
+# recent_burst is guaranteed to be the chronologically descending, last set of messages
+# sent from the contact
+# it is also guaranteed to have at least one element
+def get_recent_burst(cm: ContactMessageHistory):
+    if len(cm.message_data) == 0:
+        return []
+    if cm.message_data[0].is_from_me == 1:
+        return []
+
+    recent_burst = []
     for c in cm.message_data:
-        if c.time_delta < 86400:
-            return 0
+        if c.is_from_me == 1:
+            break
+        recent_burst.append(c)
+    return recent_burst
+
+# Returns 0 if the contact shouldn't be suggested
+# Returns >0 if the contact should be suggested. Higher value means a better suggestion
+def score_contact(cm: ContactMessageHistory):
+    # Note: be careful for c.text = None (likely an attachment)
+    recent_burst = get_recent_burst(cm)
+    if len(recent_burst) == 0:
+        return 0
+
+    # check if recent_burst occurred over a day ago
+    if recent_burst[0].time_delta < 86400:
+        return 0
+
+    # if more than one message, suggest
+    if len(recent_burst) > 1:
+        return 1
+    
+    last_message = recent_burst[0]
+    if not last_message.text:
+        return 0
+
+    t = last_message.text.lower()
+    if "?" in t:
+        return 1
+    if "loved" in t or "liked" in t or "emphasized" in t: # Reactions
+        return 0
+    if len(t) < 4:
+        return 0
+    if "thank" in t or "sounds good" in t:
+        return 0
+
     return 1
 
 # Open system preferences: open "x-apple.systempreferences:com.apple.preference.security?Privacy"
