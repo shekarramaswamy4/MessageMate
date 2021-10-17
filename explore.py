@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import plistlib
 
-from utils import format_tel
+from utils import format_tel, clean_name
 
 id_to_name = {}
 num_to_name = {}
@@ -22,8 +22,7 @@ for a in address_books:
     cur.execute("select ZSORTINGFIRSTNAME, Z_PK from ZABCDRECORD order by Z_PK asc")
     for row in cur.fetchall():
         if row[0] is not None and row[1] is not None:
-            # TODO: clean up first name
-            id_to_name[row[1]] = row[0]
+            id_to_name[row[1]] = clean_name(row[0])
 
     # Phone number, ID
     cur.execute("select ZFULLNUMBER, ZOWNER from ZABCDPHONENUMBER order by ZOWNER asc")
@@ -80,27 +79,12 @@ for row in cur.fetchall():
         num_to_messages[formatted_num] = [row[1]]
 
     
-count = 0
 for k in num_to_messages:
     if k in num_to_name:
-        # print(num_to_name[k])
-        pass
+        print(k, num_to_name[k], num_to_messages[k])
     else:
-        print(k, num_to_messages[k])
-        count += 1
-        print(str(k) + " not found") # TODO: type k upstream
-print(count)
-
-######
-
-
-
-# handles = pd.read_sql_query("select * from handle limit 10", conn)
-# print(handles)
-# print("-")
-
-# chats = pd.read_sql_query("select * from chat limit 10", conn)
-# print(chats)
+        # Log this
+        pass
 
 
 # Other potentially interesting things
