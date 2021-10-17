@@ -1,7 +1,6 @@
 import sqlite3
 import pandas as pd
-import os
-import plistlib
+from datetime import datetime
 
 from utils import format_tel, clean_name
 
@@ -58,11 +57,14 @@ cur = conn.cursor()
 
 # From messages / chats / etc., I want to reconstruct the latest message history given the
 # chat_identifier
+now = datetime.now()
+
 num_to_messages = {}
 cur.execute("""SELECT
     datetime (message.date / 1000000000 + strftime ("%s", "2001-01-01"), "unixepoch", "localtime") AS message_date,
     message.text,
-    chat.chat_identifier
+    chat.chat_identifier,
+    message.is_from_me
 FROM
     chat
     JOIN chat_message_join ON chat. "ROWID" = chat_message_join.chat_id
@@ -70,17 +72,20 @@ FROM
 ORDER BY
     message_date DESC""")
 for row in cur.fetchall():
-    print(row)
-    exit(0)
     if row[2].startswith("chat") or "icloud" in row[2]: # skip group chat or icloud numbers
         continue
-    formatted_num = format_tel(row[2])
-    if formatted_num in num_to_messages:
-        num_to_messages[formatted_num].append(row[1]) 
-    else:
-        num_to_messages[formatted_num] = [row[1]]
 
-    
+    formatted_num = format_tel(row[2])
+    unixtimestamp = datetime.fromisoformat(row[0]).timestamp()
+    diff = now.timestamp() - unixtimestamp
+
+    obj = [row[0], unixtimestamp, diff, row[1], row[3]] 
+    if formatted_num in num_to_messages:
+        num_to_messages[formatted_num].append(obj) 
+    else:
+        num_to_messages[formatted_num] = [obj]
+    exit(0)
+
 for k in num_to_messages:
     if k in num_to_name:
         print(k, num_to_name[k], num_to_messages[k])
