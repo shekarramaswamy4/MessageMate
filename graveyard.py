@@ -42,3 +42,14 @@ for cdir in abcdp_dirs:
 
     os.system(rm_cmd)
 
+
+# get the names of the tables in the database
+# cur.execute("select name from sqlite_master where type = 'table'") 
+# for name in cur.fetchall():
+    # print(name)
+
+# get the columns in a table
+# cols = pd.read_sql_query("SELECT c.name FROM pragma_table_info('chat') c", conn)
+# pd.set_option("display.max_rows", None, "display.max_columns", None)
+# print(cols)
+

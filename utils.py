@@ -8,6 +8,7 @@ def format_tel(tel):
         return None
     return num.national_number
 
+# TODO: test this
 # ZSORTINGFIRSTNAME format from Apple contacts looks like
 # [lowercased name] [actual name]
 def clean_name(text):
