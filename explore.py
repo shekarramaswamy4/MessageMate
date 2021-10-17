@@ -84,10 +84,21 @@ def fetch_and_format_message_data():
 # - Messages are over a day old
 # - Message was a question
 # - Message was not an ack like "kk"
-def suggest(data):
-    pass
+def run_suggestions(data):
+    for d in data:
+        if score_contact(d, data[d]) == 1:
+            print(d)
+
+def score_contact(key, chats):
+    for c in chats:
+        if c[2] < 86400:
+            return 0
+    return 1
+
+# Send notifications via apple script: osascript -e 'display notification "hello world!" with title "Greeting" subtitle "More text" sound name "Submarine"'
 
 data = fetch_and_format_message_data()
+run_suggestions(data)
 
 # Other potentially interesting things
 # https://docs.mau.fi/bridges/go/imessage/mac/setup.html
