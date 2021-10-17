@@ -1,8 +1,25 @@
 import sqlite3
 import pandas as pd
 from datetime import datetime
+from typing import List
 
-from utils import format_tel, clean_name
+import utils
+
+# Classes for better typing
+class ContactMessageHistory:
+    def __init__(self, phone_num, name, message_data):
+        self.phone_num = phone_num
+        self.name = name
+        self.message_data = message_data
+
+# Data on a single message. Expected to be part of a ContactMessageHistory class.
+class MessageData:
+    def __init__(self, pretty_date, timestamp, time_delta, text, is_from_me):
+        self.pretty_date = pretty_date
+        self.timestamp = timestamp
+        self.time_delta = time_delta
+        self.text = text
+        self.is_from_me = is_from_me
 
 def fetch_and_format_message_data():
     id_to_name = {}
@@ -22,18 +39,18 @@ def fetch_and_format_message_data():
         cur.execute("select ZSORTINGFIRSTNAME, Z_PK from ZABCDRECORD order by Z_PK asc")
         for row in cur.fetchall():
             if row[0] is not None and row[1] is not None:
-                id_to_name[row[1]] = clean_name(row[0])
+                id_to_name[row[1]] = utils.clean_name(row[0])
 
         # Phone number, ID
         cur.execute("select ZFULLNUMBER, ZOWNER from ZABCDPHONENUMBER order by ZOWNER asc")
         for row in cur.fetchall():
             if row[0] is not None and row[1] is not None:
                 if row[1] in id_to_name:
-                    formatted_num = format_tel(row[0])
+                    formatted_num = utils.format_tel(row[0])
                     if formatted_num is None:
                         # Log this
                         continue 
-                    num_to_name[format_tel(row[0])] = id_to_name[row[1]]
+                    num_to_name[utils.format_tel(row[0])] = id_to_name[row[1]]
                 else:
                     # Log this
                     pass
@@ -63,7 +80,7 @@ def fetch_and_format_message_data():
         if row[2].startswith("chat") or "icloud" in row[2]: # skip group chat or icloud numbers
             continue
 
-        formatted_num = format_tel(row[2])
+        formatted_num = utils.format_tel(row[2])
         if formatted_num not in num_to_name:
             continue
 
@@ -71,27 +88,31 @@ def fetch_and_format_message_data():
         diff = now.timestamp() - unixtimestamp
 
         key = (formatted_num, num_to_name[formatted_num])
-        obj = (row[0], unixtimestamp, diff, row[1], row[3]) 
+        data = MessageData(row[0], unixtimestamp, diff, row[1], row[3])
         if key in num_to_messages:
-            num_to_messages[key].append(obj) 
+            num_to_messages[key].append(data) 
         else:
-            num_to_messages[key] = [obj]
+            num_to_messages[key] = [data]
     
-    return num_to_messages
+    contact_messages = []
+    for k in num_to_messages:
+        cmh = ContactMessageHistory(k[0], k[1], num_to_messages[k])
+        contact_messages.append(cmh)
+    return contact_messages
 
 # Suggest the person to text back if:
 # - The last message(s) were from the other person
 # - Messages are over a day old
 # - Message was a question
 # - Message was not an ack like "kk"
-def run_suggestions(data):
-    for d in data:
-        if score_contact(d, data[d]) == 1:
-            print(d)
+def run_suggestions(contact_messages: List[ContactMessageHistory]):
+    for cm in contact_messages:
+        if score_contact(cm) == 1:
+            print(cm.name)
 
-def score_contact(key, chats):
-    for c in chats:
-        if c[2] < 86400:
+def score_contact(cm: ContactMessageHistory):
+    for c in cm.message_data:
+        if c.time_delta < 86400:
             return 0
     return 1
 
