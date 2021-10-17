@@ -70,6 +70,8 @@ FROM
 ORDER BY
     message_date DESC""")
 for row in cur.fetchall():
+    print(row)
+    exit(0)
     if row[2].startswith("chat") or "icloud" in row[2]: # skip group chat or icloud numbers
         continue
     formatted_num = format_tel(row[2])
