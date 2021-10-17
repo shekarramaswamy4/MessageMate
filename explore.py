@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime
 from typing import List
 import os
+import subprocess
 
 import utils
 
@@ -22,27 +23,21 @@ class MessageData:
         self.text = text
         self.is_from_me = is_from_me
 
-def fetch_and_format_message_data():
+def fetch_and_format_message_data(user: str):
     id_to_name = {}
     num_to_name = {}
 
-    # Parse address books
-    address_books = [
-        "/Users/shekarramaswamy/Library/ApplicationSupport/AddressBook/Sources/58BDEBE3-DA9B-4BF3-A9CB-E5A17F4BC2CC/AddressBook-v22.abcddb",
-        "/Users/shekarramaswamy/Library/ApplicationSupport/AddressBook/Sources/1675CD53-E9F2-46BF-9DE1-12EF837D05BB/AddressBook-v22.abcddb"
-    ]
+    address_books = fetch_address_books(user)
+    if len(address_books) == 0: # Likely, no file system access.
+        open_file_system_preferences()
+        print("""
+If you've already enabled file system access, try quitting and reopening your terminal.
+If that still doesn't work, please contact support!
+        """)
+        return []
 
     for a in address_books:
-        cc = None
-        try:
-            cc = sqlite3.connect(a)
-        except sqlite3.OperationalError:
-            open_file_system_preferences()
-            return []
-        if cc is None:
-            open_file_system_preferences()
-            return []
-
+        cc = sqlite3.connect(a)
         cur = cc.cursor()
 
         # Name, ID
@@ -69,7 +64,7 @@ def fetch_and_format_message_data():
                 pass
 
     # Connect to chats database
-    conn = sqlite3.connect('/Users/shekarramaswamy/Library/Messages/chat.db')
+    conn = sqlite3.connect("/Users/" + user + "/Library/Messages/chat.db")
     cur = conn.cursor()
     
     now = datetime.now()
@@ -114,6 +109,16 @@ def open_file_system_preferences():
     print("I need file system access to help you stay on top of your messages!")
     print("Opening system preferences now")
     os.system("open x-apple.systempreferences:com.apple.preference.security?Privacy")
+
+def fetch_address_books(user: str):
+    start_path = "/Users/" + user + "/Library/Application Support/AddressBook/Sources"
+    address_books = []
+    for root, _, files in os.walk(start_path):
+        for item in files:
+            if item.endswith(".abcddb") :
+                path = str(os.path.join(root,item))
+                address_books.append(path)
+    return address_books
 
 # Suggest the person to text back if:
 # - The last message(s) were from the other person
@@ -176,8 +181,10 @@ def score_contact(cm: ContactMessageHistory):
     return 1
 
 # Send notifications via apple script: osascript -e 'display notification "hello world!" with title "Greeting" subtitle "More text" sound name "Submarine"'
+user = subprocess.check_output("stat -f %Su /dev/console", shell=True).decode().strip()
+user = user.replace('\'', '')
 
-data = fetch_and_format_message_data()
+data = fetch_and_format_message_data(user)
 if len(data) == 0:
     exit(0)
 run_suggestions(data)

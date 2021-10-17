@@ -1,3 +1,2 @@
-1. generalize path searching (remove hardecoded address books and chats)
-2. give more data on suggestion output (last texts, etc.)
-3. make interactive with suggestions via deeplinks
+- give more data on suggestion output (last texts, etc.)
+- make interactive with suggestions via deeplinks
