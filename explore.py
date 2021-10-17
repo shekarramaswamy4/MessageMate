@@ -2,6 +2,7 @@ import sqlite3
 import pandas as pd
 from datetime import datetime
 from typing import List
+import os
 
 import utils
 
@@ -32,7 +33,16 @@ def fetch_and_format_message_data():
     ]
 
     for a in address_books:
-        cc = sqlite3.connect(a)
+        cc = None
+        try:
+            cc = sqlite3.connect(a)
+        except sqlite3.OperationalError:
+            open_file_system_preferences()
+            return []
+        if cc is None:
+            open_file_system_preferences()
+            return []
+
         cur = cc.cursor()
 
         # Name, ID
@@ -100,6 +110,11 @@ def fetch_and_format_message_data():
         contact_messages.append(cmh)
     return contact_messages
 
+def open_file_system_preferences():
+    print("I need file system access to help you stay on top of your messages!")
+    print("Opening system preferences now")
+    os.system("open x-apple.systempreferences:com.apple.preference.security?Privacy")
+
 # Suggest the person to text back if:
 # - The last message(s) were from the other person
 # - Messages are over a day old
@@ -164,6 +179,8 @@ def score_contact(cm: ContactMessageHistory):
 # Send notifications via apple script: osascript -e 'display notification "hello world!" with title "Greeting" subtitle "More text" sound name "Submarine"'
 
 data = fetch_and_format_message_data()
+if len(data) == 0:
+    exit(0)
 run_suggestions(data)
 
 # Other potentially interesting things
