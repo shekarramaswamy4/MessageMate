@@ -4,7 +4,9 @@ iMessage assistant outputs the people you may have forgotten to respond to (Mac 
 The program asks for full disk access, which means that it can read the contents of your machine. Don't worry! The program makes **no** network requests. All data is stored locally to maintain privacy.
 
 # Usage
-python3 explore.py 
+(you may need to install python3 / some dependencies like pandas)
+
+`python3 explore.py` 
 
 # Roadmap
 - improve suggestions suggestion algorithm
