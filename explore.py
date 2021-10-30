@@ -7,13 +7,6 @@ import subprocess
 
 import utils
 
-# Classes for better typing
-class ContactMessageHistory:
-    def __init__(self, phone_num, name, message_data):
-        self.phone_num = phone_num
-        self.name = name
-        self.message_data = message_data
-
 # Data on a single message. Expected to be part of a ContactMessageHistory class.
 class MessageData:
     def __init__(self, pretty_date, timestamp, time_delta, text, is_from_me):
@@ -22,6 +15,13 @@ class MessageData:
         self.time_delta = time_delta
         self.text = text
         self.is_from_me = is_from_me
+
+# Classes for better typing
+class ContactMessageHistory:
+    def __init__(self, phone_num, name, message_data: List[MessageData]):
+        self.phone_num = phone_num
+        self.name = name
+        self.message_data = message_data
 
 def fetch_and_format_message_data(user: str):
     id_to_name = {}
@@ -128,8 +128,14 @@ def fetch_address_books(user: str):
 def run_suggestions(contact_messages: List[ContactMessageHistory]):
     for cm in contact_messages:
         if score_contact(cm) == 1:
-            # TODO: add more data about the person
             print(cm.name)
+            i = 0
+            while i < len(cm.message_data) and not cm.message_data[i].is_from_me:
+                print(cm.message_data[i].text)
+                i += 1
+
+            print("open sms:" + str(cm.phone_num))
+            print()
 
 # Recent burst defines the last set of messages from the contact that was sent
 # recent_burst is guaranteed to be the chronologically descending, last set of messages
@@ -152,8 +158,13 @@ def get_recent_burst(cm: ContactMessageHistory):
 # Returns >0 if the contact should be suggested. Higher value means a better suggestion
 def score_contact(cm: ContactMessageHistory):
     # Note: be careful for c.text = None (likely an attachment)
-    recent_burst = get_recent_burst(cm)
+    recent_burst: List[MessageData] = get_recent_burst(cm)
     if len(recent_burst) == 0:
+        return 0
+
+    # Some weird edge case
+    orc = u'￼' # object replacement character
+    if all(md.text == orc for md in recent_burst):
         return 0
 
     # check if recent_burst occurred over a day ago
