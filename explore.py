@@ -64,7 +64,7 @@ If that still doesn't work, please contact support!
                 # Log this
                 pass
 
-    print("finished accessing contacts")
+    print("finished accessing contacts. found " + str(len(num_to_name)) + " contacts")
     # Connect to chats database
     conn = sqlite3.connect("/Users/" + user + "/Library/Messages/chat.db")
     print("connected to chats db")
@@ -101,12 +101,14 @@ If that still doesn't work, please contact support!
             num_to_messages[key].append(data) 
         else:
             num_to_messages[key] = [data]
-    
+
+    print("found " + str(len(num_to_messages)) + " total conversations")
+
     contact_messages = []
     for k in num_to_messages:
         cmh = ContactMessageHistory(k[0], k[1], num_to_messages[k])
         contact_messages.append(cmh)
-    print("found " + str(len(contact_messages)) + " total conversations")
+    print("matched " + str(len(contact_messages)) + " total conversations to contacts")
     return contact_messages
 
 def open_file_system_preferences():
@@ -205,6 +207,7 @@ print("finished fetching data")
 if len(data) == 0:
     exit(0)
 print("creating suggestions")
+print()
 run_suggestions(data)
 
 # Other potentially interesting things
