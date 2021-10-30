@@ -28,6 +28,7 @@ def fetch_and_format_message_data(user: str):
     num_to_name = {}
 
     address_books = fetch_address_books(user)
+    print("found " +  str(len(address_books)) + " address books")
     if len(address_books) == 0: # Likely, no file system access.
         open_file_system_preferences()
         print("""
@@ -63,8 +64,10 @@ If that still doesn't work, please contact support!
                 # Log this
                 pass
 
+    print("finished accessing contacts")
     # Connect to chats database
     conn = sqlite3.connect("/Users/" + user + "/Library/Messages/chat.db")
+    print("connected to chats db")
     cur = conn.cursor()
     
     now = datetime.now()
@@ -103,6 +106,7 @@ If that still doesn't work, please contact support!
     for k in num_to_messages:
         cmh = ContactMessageHistory(k[0], k[1], num_to_messages[k])
         contact_messages.append(cmh)
+    print("found " + str(len(contact_messages)) + " total conversations")
     return contact_messages
 
 def open_file_system_preferences():
@@ -195,9 +199,12 @@ def score_contact(cm: ContactMessageHistory):
 user = subprocess.check_output("stat -f %Su /dev/console", shell=True).decode().strip()
 user = user.replace('\'', '')
 
+print("fetching data for user: " + user)
 data = fetch_and_format_message_data(user)
+print("finished fetching data")
 if len(data) == 0:
     exit(0)
+print("creating suggestions")
 run_suggestions(data)
 
 # Other potentially interesting things
