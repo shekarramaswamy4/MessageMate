@@ -3,7 +3,10 @@ import phonenumbers
 # TODO: test this
 # Canonicalize US phone numbers
 def format_tel(tel):
-    num = phonenumbers.parse(tel, "US")
+    try:
+        num = phonenumbers.parse(tel, "US")
+    except:
+        return None
     if not phonenumbers.is_valid_number(num):
         return None
     return num.national_number
