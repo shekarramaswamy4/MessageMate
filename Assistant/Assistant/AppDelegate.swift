@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+let data = Data()
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -13,7 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Check full disk access permission
         
-        Data.readAndFormatContacts()
+        data.getData()
         
         
     }

@@ -11,6 +11,7 @@
 		D067E851272F22CC003159B6 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = D067E850272F22CC003159B6 /* Models.swift */; };
 		D067E853272F22D4003159B6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D067E852272F22D4003159B6 /* Utils.swift */; };
 		D067E856272F2D7C003159B6 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = D067E855272F2D7C003159B6 /* GRDB */; };
+		D067E859272F383B003159B6 /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = D067E858272F383B003159B6 /* PhoneNumberKit */; };
 		D092BB3F272DDA830032BDEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D092BB3E272DDA830032BDEB /* AppDelegate.swift */; };
 		D092BB41272DDA830032BDEB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D092BB40272DDA830032BDEB /* ViewController.swift */; };
 		D092BB44272DDA830032BDEB /* Assistant.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D092BB42272DDA830032BDEB /* Assistant.xcdatamodeld */; };
@@ -38,6 +39,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D067E856272F2D7C003159B6 /* GRDB in Frameworks */,
+				D067E859272F383B003159B6 /* PhoneNumberKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +97,7 @@
 			name = Assistant;
 			packageProductDependencies = (
 				D067E855272F2D7C003159B6 /* GRDB */,
+				D067E858272F383B003159B6 /* PhoneNumberKit */,
 			);
 			productName = Assistant;
 			productReference = D092BB3B272DDA830032BDEB /* Assistant.app */;
@@ -126,6 +129,7 @@
 			mainGroup = D092BB32272DDA830032BDEB;
 			packageReferences = (
 				D067E854272F2D7C003159B6 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
+				D067E857272F383B003159B6 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
 			);
 			productRefGroup = D092BB3C272DDA830032BDEB /* Products */;
 			projectDirPath = "";
@@ -377,6 +381,14 @@
 				kind = branch;
 			};
 		};
+		D067E857272F383B003159B6 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/marmelroy/PhoneNumberKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.3.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -384,6 +396,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D067E854272F2D7C003159B6 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
 			productName = GRDB;
+		};
+		D067E858272F383B003159B6 /* PhoneNumberKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D067E857272F383B003159B6 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
+			productName = PhoneNumberKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 
