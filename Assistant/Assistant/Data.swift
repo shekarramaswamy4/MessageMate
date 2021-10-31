@@ -126,8 +126,11 @@ ORDER BY
                             continue
                         }
                         
-                        // TODO: clean name
-                        idToName[id!] = name!
+                        if name!.count == 0 {
+                            continue
+                        }
+                        
+                        idToName[id!] = Utils.cleanName(name: name!)
                     }
                 }
                 
