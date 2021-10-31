@@ -7,16 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D067E84F272F22C1003159B6 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = D067E84E272F22C1003159B6 /* Data.swift */; };
+		D067E851272F22CC003159B6 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = D067E850272F22CC003159B6 /* Models.swift */; };
+		D067E853272F22D4003159B6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D067E852272F22D4003159B6 /* Utils.swift */; };
+		D067E856272F2D7C003159B6 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = D067E855272F2D7C003159B6 /* GRDB */; };
 		D092BB3F272DDA830032BDEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D092BB3E272DDA830032BDEB /* AppDelegate.swift */; };
 		D092BB41272DDA830032BDEB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D092BB40272DDA830032BDEB /* ViewController.swift */; };
 		D092BB44272DDA830032BDEB /* Assistant.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D092BB42272DDA830032BDEB /* Assistant.xcdatamodeld */; };
 		D092BB46272DDA860032BDEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D092BB45272DDA860032BDEB /* Assets.xcassets */; };
 		D092BB49272DDA860032BDEB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D092BB47272DDA860032BDEB /* Main.storyboard */; };
-		D092BB58272E5B870032BDEB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = D092BB57272E5B870032BDEB /* SQLite */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D067E84D272E6313003159B6 /* AssistantRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AssistantRelease.entitlements; sourceTree = "<group>"; };
+		D067E84E272F22C1003159B6 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		D067E850272F22CC003159B6 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		D067E852272F22D4003159B6 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		D092BB3B272DDA830032BDEB /* Assistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assistant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D092BB3E272DDA830032BDEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D092BB40272DDA830032BDEB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -31,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D092BB58272E5B870032BDEB /* SQLite in Frameworks */,
+				D067E856272F2D7C003159B6 /* GRDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +70,9 @@
 				D067E84D272E6313003159B6 /* AssistantRelease.entitlements */,
 				D092BB4A272DDA860032BDEB /* Assistant.entitlements */,
 				D092BB42272DDA830032BDEB /* Assistant.xcdatamodeld */,
+				D067E84E272F22C1003159B6 /* Data.swift */,
+				D067E850272F22CC003159B6 /* Models.swift */,
+				D067E852272F22D4003159B6 /* Utils.swift */,
 			);
 			path = Assistant;
 			sourceTree = "<group>";
@@ -85,7 +94,7 @@
 			);
 			name = Assistant;
 			packageProductDependencies = (
-				D092BB57272E5B870032BDEB /* SQLite */,
+				D067E855272F2D7C003159B6 /* GRDB */,
 			);
 			productName = Assistant;
 			productReference = D092BB3B272DDA830032BDEB /* Assistant.app */;
@@ -116,7 +125,7 @@
 			);
 			mainGroup = D092BB32272DDA830032BDEB;
 			packageReferences = (
-				D092BB56272E5B870032BDEB /* XCRemoteSwiftPackageReference "SQLite.swift" */,
+				D067E854272F2D7C003159B6 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 			);
 			productRefGroup = D092BB3C272DDA830032BDEB /* Products */;
 			projectDirPath = "";
@@ -147,6 +156,9 @@
 				D092BB41272DDA830032BDEB /* ViewController.swift in Sources */,
 				D092BB3F272DDA830032BDEB /* AppDelegate.swift in Sources */,
 				D092BB44272DDA830032BDEB /* Assistant.xcdatamodeld in Sources */,
+				D067E84F272F22C1003159B6 /* Data.swift in Sources */,
+				D067E851272F22CC003159B6 /* Models.swift in Sources */,
+				D067E853272F22D4003159B6 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,9 +369,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		D092BB56272E5B870032BDEB /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
+		D067E854272F2D7C003159B6 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/stephencelis/SQLite.swift.git";
+			repositoryURL = "https://github.com/groue/GRDB.swift.git";
 			requirement = {
 				branch = master;
 				kind = branch;
@@ -368,10 +380,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		D092BB57272E5B870032BDEB /* SQLite */ = {
+		D067E855272F2D7C003159B6 /* GRDB */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D092BB56272E5B870032BDEB /* XCRemoteSwiftPackageReference "SQLite.swift" */;
-			productName = SQLite;
+			package = D067E854272F2D7C003159B6 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
 		};
 /* End XCSwiftPackageProductDependency section */
 
