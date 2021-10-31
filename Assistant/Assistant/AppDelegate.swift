@@ -6,12 +6,58 @@
 //
 
 import Cocoa
+import Contacts
+import SQLite
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        // Check full disk access permission
+        
         print("hello")
+        
+        var url = try? FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        url = url!.appendingPathComponent("Messages", isDirectory: true).appendingPathComponent("chat.db", isDirectory: false)
+        print(url?.absoluteString)
+        
+        do {
+            let db = try Connection(url!.absoluteString)
+        } catch {
+            print(error)
+        }
+        
+        var url2 = try? FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        url2 = url2!.appendingPathComponent("Application Support", isDirectory: true).appendingPathComponent("AddressBook", isDirectory: true)
+        url2 = url2!.appendingPathComponent("Sources", isDirectory: true).appendingPathComponent("58BDEBE3-DA9B-4BF3-A9CB-E5A17F4BC2CC", isDirectory: true)
+        url2 = url2?.appendingPathComponent("AddressBook-v22.abcddb", isDirectory: false)
+        print(url2)
+        
+        do {
+            let db2 = try Connection(url2!.absoluteString)
+            for row in try db2.prepare("select ZSORTINGFIRSTNAME, Z_PK from ZABCDRECORD order by Z_PK asc") {
+                print(row)
+            }
+        } catch {
+            print(error)
+        }
+
+//        let store = CNContactStore()
+//
+//        store.requestAccess(for: .contacts) { granted, _ in
+//            print(granted)
+//            let keysToFetch = [CNContactGivenNameKey, CNContactPhoneNumbersKey] as [CNKeyDescriptor]
+//            do {
+//                let predicate = CNContact.predicateForContacts(matchingName: "*")
+//                let contacts = try store.unifiedContacts(matching: predicate, keysToFetch: keysToFetch)
+//                print("Fetched contacts: \(contacts)")
+//            } catch {
+//                print("Failed to fetch contact, error: \(error)")
+//                // Handle the error
+//            }
+//        }
+        
+
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

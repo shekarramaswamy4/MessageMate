@@ -12,9 +12,11 @@
 		D092BB44272DDA830032BDEB /* Assistant.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D092BB42272DDA830032BDEB /* Assistant.xcdatamodeld */; };
 		D092BB46272DDA860032BDEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D092BB45272DDA860032BDEB /* Assets.xcassets */; };
 		D092BB49272DDA860032BDEB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D092BB47272DDA860032BDEB /* Main.storyboard */; };
+		D092BB58272E5B870032BDEB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = D092BB57272E5B870032BDEB /* SQLite */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D067E84D272E6313003159B6 /* AssistantRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AssistantRelease.entitlements; sourceTree = "<group>"; };
 		D092BB3B272DDA830032BDEB /* Assistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assistant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D092BB3E272DDA830032BDEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D092BB40272DDA830032BDEB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -29,6 +31,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D092BB58272E5B870032BDEB /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +61,7 @@
 				D092BB40272DDA830032BDEB /* ViewController.swift */,
 				D092BB45272DDA860032BDEB /* Assets.xcassets */,
 				D092BB47272DDA860032BDEB /* Main.storyboard */,
+				D067E84D272E6313003159B6 /* AssistantRelease.entitlements */,
 				D092BB4A272DDA860032BDEB /* Assistant.entitlements */,
 				D092BB42272DDA830032BDEB /* Assistant.xcdatamodeld */,
 			);
@@ -81,6 +85,7 @@
 			);
 			name = Assistant;
 			packageProductDependencies = (
+				D092BB57272E5B870032BDEB /* SQLite */,
 			);
 			productName = Assistant;
 			productReference = D092BB3B272DDA830032BDEB /* Assistant.app */;
@@ -111,6 +116,7 @@
 			);
 			mainGroup = D092BB32272DDA830032BDEB;
 			packageReferences = (
+				D092BB56272E5B870032BDEB /* XCRemoteSwiftPackageReference "SQLite.swift" */,
 			);
 			productRefGroup = D092BB3C272DDA830032BDEB /* Products */;
 			projectDirPath = "";
@@ -305,7 +311,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Assistant/Assistant.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Assistant/AssistantRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -349,6 +355,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D092BB56272E5B870032BDEB /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D092BB57272E5B870032BDEB /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D092BB56272E5B870032BDEB /* XCRemoteSwiftPackageReference "SQLite.swift" */;
+			productName = SQLite;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		D092BB42272DDA830032BDEB /* Assistant.xcdatamodeld */ = {
