@@ -6,7 +6,6 @@
 //
 
 import Cocoa
-import Contacts
 import SQLite
 
 @main
@@ -41,23 +40,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         } catch {
             print(error)
         }
-
-//        let store = CNContactStore()
-//
-//        store.requestAccess(for: .contacts) { granted, _ in
-//            print(granted)
-//            let keysToFetch = [CNContactGivenNameKey, CNContactPhoneNumbersKey] as [CNKeyDescriptor]
-//            do {
-//                let predicate = CNContact.predicateForContacts(matchingName: "*")
-//                let contacts = try store.unifiedContacts(matching: predicate, keysToFetch: keysToFetch)
-//                print("Fetched contacts: \(contacts)")
-//            } catch {
-//                print("Failed to fetch contact, error: \(error)")
-//                // Handle the error
-//            }
-//        }
-        
-
+    
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
