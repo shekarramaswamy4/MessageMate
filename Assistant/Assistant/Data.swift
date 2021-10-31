@@ -41,6 +41,7 @@ FROM
 ORDER BY
     message_date DESC
 """
+            let now = Date(timeIntervalSinceNow: 0)
             try dbQueue.read { db in
                 let rows = try Row.fetchCursor(db, sql: query)
                 while let row = try rows.next() {
@@ -56,11 +57,18 @@ ORDER BY
                         continue
                     }
                     
-                    let prettyDate: String = row["messageDate"]
+                    let timestamp: Double = row["messageDate"]
                     let text: String? = row["text"]
                     let isFromMe: Bool = row["isFromMe"]
                     
-                    let md = MessageData(prettyDate: prettyDate, timestamp: 0, timeDelta: 0, text: text ?? "", isFromMe: isFromMe)
+                    // 2001-01-01 00:00:00 UTC
+                    // https://towardsdatascience.com/heres-how-you-can-access-your-entire-imessage-history-on-your-mac-f8878276c6e9
+                    let baseDate = Date(timeIntervalSince1970: 978307200)
+                    let date = Date(timeInterval: timestamp / 1000000000, since: baseDate)
+                                                                                                    
+                    let md = MessageData(timestamp: date.timeIntervalSince1970,
+                                         timeDelta: now.timeIntervalSince1970 - date.timeIntervalSince1970, text: text ?? "",
+                                         isFromMe: isFromMe)
                     
                     if numToMessages.index(forKey: cleaned!) == nil {
                         numToMessages[cleaned!] = [md]

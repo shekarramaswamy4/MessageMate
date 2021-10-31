@@ -8,9 +8,8 @@
 import Foundation
 
 struct MessageData {
-    let prettyDate: String
-    let timestamp: Int
-    let timeDelta: Int
+    let timestamp: Double
+    let timeDelta: Double
     let text: String
     let isFromMe: Bool
 }
