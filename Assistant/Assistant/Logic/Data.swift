@@ -10,12 +10,10 @@ import GRDB
 
 class Data {
     
-    func getData() {
+    func getData() -> [ContactMessageHistory] {
         let numToName = self.readAndFormatContacts()
         let data = self.readAndFormatChats(numToName: numToName)
-        print(data.count)
-        print(data[0].name)
-        print(data[0].phoneNum)
+        return data
     }
     
     private func readAndFormatChats(numToName: [String:String]) -> [ContactMessageHistory] {

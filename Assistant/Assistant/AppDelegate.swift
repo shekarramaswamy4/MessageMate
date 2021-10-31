@@ -6,7 +6,12 @@
 //
 
 import Cocoa
+
 let data = Data()
+let suggestion = Suggestion()
+
+// TODO:
+// clean non imessage
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -14,9 +19,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Check full disk access permission
         
-        data.getData()
-        
-        
+        let data = data.getData()
+        let suggestion = suggestion.makeSuggestions(cmh: data)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
