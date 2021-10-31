@@ -12,7 +12,6 @@
 		D092BB44272DDA830032BDEB /* Assistant.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D092BB42272DDA830032BDEB /* Assistant.xcdatamodeld */; };
 		D092BB46272DDA860032BDEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D092BB45272DDA860032BDEB /* Assets.xcassets */; };
 		D092BB49272DDA860032BDEB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D092BB47272DDA860032BDEB /* Main.storyboard */; };
-		D092BB52272DDE000032BDEB /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = D092BB51272DDE000032BDEB /* PythonKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,7 +29,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D092BB52272DDE000032BDEB /* PythonKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +81,6 @@
 			);
 			name = Assistant;
 			packageProductDependencies = (
-				D092BB51272DDE000032BDEB /* PythonKit */,
 			);
 			productName = Assistant;
 			productReference = D092BB3B272DDA830032BDEB /* Assistant.app */;
@@ -114,7 +111,6 @@
 			);
 			mainGroup = D092BB32272DDA830032BDEB;
 			packageReferences = (
-				D092BB50272DDE000032BDEB /* XCRemoteSwiftPackageReference "PythonKit" */,
 			);
 			productRefGroup = D092BB3C272DDA830032BDEB /* Products */;
 			projectDirPath = "";
@@ -353,25 +349,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		D092BB50272DDE000032BDEB /* XCRemoteSwiftPackageReference "PythonKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pvieito/PythonKit";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		D092BB51272DDE000032BDEB /* PythonKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D092BB50272DDE000032BDEB /* XCRemoteSwiftPackageReference "PythonKit" */;
-			productName = PythonKit;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		D092BB42272DDA830032BDEB /* Assistant.xcdatamodeld */ = {
