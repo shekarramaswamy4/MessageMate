@@ -30,7 +30,7 @@ class Data {
             
             let query = """
 SELECT
-    datetime (message.date / 1000000000 + strftime ("%s", "2001-01-01"), "unixepoch", "localtime") AS messageDate,
+    message.date as messageDate,
     message.text as text,
     chat.chat_identifier as chatId,
     message.is_from_me as isFromMe
@@ -62,7 +62,7 @@ ORDER BY
                     
                     let md = MessageData(prettyDate: prettyDate, timestamp: 0, timeDelta: 0, text: text ?? "", isFromMe: isFromMe)
                     
-                    if numToName.index(forKey: cleaned!) == nil {
+                    if numToMessages.index(forKey: cleaned!) == nil {
                         numToMessages[cleaned!] = [md]
                     } else {
                         var c = numToMessages[cleaned!]!
