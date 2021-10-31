@@ -36,6 +36,8 @@ FROM
     chat
     JOIN chat_message_join ON chat. "ROWID" = chat_message_join.chat_id
     JOIN message ON chat_message_join.message_id = message. "ROWID"
+WHERE
+    service = 'iMessage'
 ORDER BY
     message_date DESC
 """

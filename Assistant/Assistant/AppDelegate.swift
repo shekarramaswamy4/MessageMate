@@ -10,9 +10,6 @@ import Cocoa
 let data = Data()
 let suggestion = Suggestion()
 
-// TODO:
-// clean non imessage
-
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
     
