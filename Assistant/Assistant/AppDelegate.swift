@@ -10,9 +10,10 @@ import Cocoa
 let data = Data()
 let suggestion = Suggestion()
 
-@main
+@NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     
+    var window: NSWindow!
     var popover: NSPopover!
     var statusBarItem: NSStatusItem!
     
@@ -23,6 +24,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let suggestion = suggestion.makeSuggestions(cmh: data)
         
         let vc = ViewController()
+        
+        window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            backing: .buffered, defer: false)
+        window.center()
+        window.setFrameAutosaveName("Main Window")
+        window.contentView = vc.view
+        window.makeKeyAndOrderFront(nil)
+        
         
         let popover = NSPopover()
         popover.contentSize = NSSize(width: 400, height: 500)

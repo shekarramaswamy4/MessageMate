@@ -31,6 +31,7 @@
 		D092BB43272DDA830032BDEB /* Assistant.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Assistant.xcdatamodel; sourceTree = "<group>"; };
 		D092BB45272DDA860032BDEB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D092BB4A272DDA860032BDEB /* Assistant.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Assistant.entitlements; sourceTree = "<group>"; };
+		D0BF8100273105AB0019F06D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +77,7 @@
 		D092BB3D272DDA830032BDEB /* Assistant */ = {
 			isa = PBXGroup;
 			children = (
+				D0BF8100273105AB0019F06D /* Info.plist */,
 				D067E85A272F5338003159B6 /* Logic */,
 				D092BB3E272DDA830032BDEB /* AppDelegate.swift */,
 				D092BB40272DDA830032BDEB /* ViewController.swift */,
@@ -304,8 +306,8 @@
 				DEVELOPMENT_TEAM = Y4QKQ92AFR;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Assistant/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -331,8 +333,8 @@
 				DEVELOPMENT_TEAM = Y4QKQ92AFR;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Assistant/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
