@@ -17,7 +17,6 @@
 		D092BB41272DDA830032BDEB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D092BB40272DDA830032BDEB /* ViewController.swift */; };
 		D092BB44272DDA830032BDEB /* Assistant.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D092BB42272DDA830032BDEB /* Assistant.xcdatamodeld */; };
 		D092BB46272DDA860032BDEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D092BB45272DDA860032BDEB /* Assets.xcassets */; };
-		D092BB49272DDA860032BDEB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D092BB47272DDA860032BDEB /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +30,6 @@
 		D092BB40272DDA830032BDEB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D092BB43272DDA830032BDEB /* Assistant.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Assistant.xcdatamodel; sourceTree = "<group>"; };
 		D092BB45272DDA860032BDEB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D092BB48272DDA860032BDEB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D092BB4A272DDA860032BDEB /* Assistant.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Assistant.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -82,7 +80,6 @@
 				D092BB3E272DDA830032BDEB /* AppDelegate.swift */,
 				D092BB40272DDA830032BDEB /* ViewController.swift */,
 				D092BB45272DDA860032BDEB /* Assets.xcassets */,
-				D092BB47272DDA860032BDEB /* Main.storyboard */,
 				D067E84D272E6313003159B6 /* AssistantRelease.entitlements */,
 				D092BB4A272DDA860032BDEB /* Assistant.entitlements */,
 				D092BB42272DDA830032BDEB /* Assistant.xcdatamodeld */,
@@ -157,7 +154,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D092BB46272DDA860032BDEB /* Assets.xcassets in Resources */,
-				D092BB49272DDA860032BDEB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,17 +175,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		D092BB47272DDA860032BDEB /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D092BB48272DDA860032BDEB /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		D092BB4B272DDA860032BDEB /* Debug */ = {
