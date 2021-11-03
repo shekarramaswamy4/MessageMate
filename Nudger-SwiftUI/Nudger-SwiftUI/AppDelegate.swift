@@ -17,7 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create the SwiftUI view (i.e. the content).
-        let contentView = ContentView()
+        let contentView = PersonList()
 
         // Create the popover and sets ContentView as the rootView
         let popover = NSPopover()

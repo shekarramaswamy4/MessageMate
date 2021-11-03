@@ -14,6 +14,13 @@
 		D0BF8133273107270019F06D /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF8132273107270019F06D /* Persistence.swift */; };
 		D0BF8136273107270019F06D /* Nudger_SwiftUI.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0BF8134273107270019F06D /* Nudger_SwiftUI.xcdatamodeld */; };
 		D0BF813E2731080A0019F06D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF813D2731080A0019F06D /* AppDelegate.swift */; };
+		D0BF81412732479F0019F06D /* PersonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF81402732479F0019F06D /* PersonList.swift */; };
+		D0BF8147273248510019F06D /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF8143273248510019F06D /* Data.swift */; };
+		D0BF8148273248510019F06D /* Suggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF8144273248510019F06D /* Suggestion.swift */; };
+		D0BF8149273248510019F06D /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF8145273248510019F06D /* Models.swift */; };
+		D0BF814A273248510019F06D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF8146273248510019F06D /* Utils.swift */; };
+		D0BF814D273248800019F06D /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = D0BF814C273248800019F06D /* GRDB */; };
+		D0BF8150273248A50019F06D /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = D0BF814F273248A50019F06D /* PhoneNumberKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +34,11 @@
 		D0BF8137273107270019F06D /* Nudger_SwiftUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Nudger_SwiftUI.entitlements; sourceTree = "<group>"; };
 		D0BF813D2731080A0019F06D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0BF813F27310A600019F06D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D0BF81402732479F0019F06D /* PersonList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonList.swift; sourceTree = "<group>"; };
+		D0BF8143273248510019F06D /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		D0BF8144273248510019F06D /* Suggestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Suggestion.swift; sourceTree = "<group>"; };
+		D0BF8145273248510019F06D /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		D0BF8146273248510019F06D /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +46,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0BF814D273248800019F06D /* GRDB in Frameworks */,
+				D0BF8150273248A50019F06D /* PhoneNumberKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,9 +74,11 @@
 			isa = PBXGroup;
 			children = (
 				D0BF813F27310A600019F06D /* Info.plist */,
+				D0BF8142273248510019F06D /* Logic */,
 				D0BF813D2731080A0019F06D /* AppDelegate.swift */,
 				D0BF8129273107230019F06D /* Nudger_SwiftUIApp.swift */,
 				D0BF812B273107230019F06D /* ContentView.swift */,
+				D0BF81402732479F0019F06D /* PersonList.swift */,
 				D0BF812D273107270019F06D /* Assets.xcassets */,
 				D0BF8132273107270019F06D /* Persistence.swift */,
 				D0BF8137273107270019F06D /* Nudger_SwiftUI.entitlements */,
@@ -78,6 +94,18 @@
 				D0BF8130273107270019F06D /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D0BF8142273248510019F06D /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+				D0BF8143273248510019F06D /* Data.swift */,
+				D0BF8144273248510019F06D /* Suggestion.swift */,
+				D0BF8145273248510019F06D /* Models.swift */,
+				D0BF8146273248510019F06D /* Utils.swift */,
+			);
+			name = Logic;
+			path = ../../Assistant/Assistant/Logic;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -96,6 +124,10 @@
 			dependencies = (
 			);
 			name = "Nudger-SwiftUI";
+			packageProductDependencies = (
+				D0BF814C273248800019F06D /* GRDB */,
+				D0BF814F273248A50019F06D /* PhoneNumberKit */,
+			);
 			productName = "Nudger-SwiftUI";
 			productReference = D0BF8126273107230019F06D /* Nudger-SwiftUI.app */;
 			productType = "com.apple.product-type.application";
@@ -124,6 +156,10 @@
 				Base,
 			);
 			mainGroup = D0BF811D273107230019F06D;
+			packageReferences = (
+				D0BF814B273248800019F06D /* XCRemoteSwiftPackageReference "GRDB.swift" */,
+				D0BF814E273248A50019F06D /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
+			);
 			productRefGroup = D0BF8127273107230019F06D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -150,10 +186,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0BF8147273248510019F06D /* Data.swift in Sources */,
 				D0BF8133273107270019F06D /* Persistence.swift in Sources */,
 				D0BF812C273107230019F06D /* ContentView.swift in Sources */,
+				D0BF8148273248510019F06D /* Suggestion.swift in Sources */,
 				D0BF8136273107270019F06D /* Nudger_SwiftUI.xcdatamodeld in Sources */,
+				D0BF814A273248510019F06D /* Utils.swift in Sources */,
 				D0BF813E2731080A0019F06D /* AppDelegate.swift in Sources */,
+				D0BF8149273248510019F06D /* Models.swift in Sources */,
+				D0BF81412732479F0019F06D /* PersonList.swift in Sources */,
 				D0BF812A273107230019F06D /* Nudger_SwiftUIApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,6 +395,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D0BF814B273248800019F06D /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/GRDB.swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		D0BF814E273248A50019F06D /* XCRemoteSwiftPackageReference "PhoneNumberKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/marmelroy/PhoneNumberKit.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D0BF814C273248800019F06D /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D0BF814B273248800019F06D /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
+		};
+		D0BF814F273248A50019F06D /* PhoneNumberKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D0BF814E273248A50019F06D /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
+			productName = PhoneNumberKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		D0BF8134273107270019F06D /* Nudger_SwiftUI.xcdatamodeld */ = {

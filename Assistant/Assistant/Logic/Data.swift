@@ -19,9 +19,7 @@ class Data {
     private func readAndFormatChats(numToName: [String:String]) -> [ContactMessageHistory] {
         var url = try? FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
         url = url!.appendingPathComponent("Messages", isDirectory: true).appendingPathComponent("chat.db", isDirectory: false)
-        
-        print(url?.absoluteString)
-        
+                
         var numToMessages: [String: [MessageData]] = [:]
         do {
             let dbQueue = try DatabaseQueue(path: url!.absoluteString)
