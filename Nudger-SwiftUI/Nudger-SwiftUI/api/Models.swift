@@ -7,14 +7,18 @@
 
 import Foundation
 
-struct MessageData {
+struct MessageData: Identifiable {
+    let id = UUID()
+    
     let timestamp: Double
     let timeDelta: Double
     let text: String
     let isFromMe: Bool
 }
 
-struct ContactMessageHistory {
+struct ContactMessageHistory: Identifiable {
+    let id = UUID()
+    
     let phoneNum: String
     let name: String
     let messageData: [MessageData]

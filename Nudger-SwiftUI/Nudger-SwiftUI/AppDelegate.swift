@@ -9,6 +9,9 @@ import Foundation
 import Cocoa
 import SwiftUI
 
+let dataAPI = Data()
+let suggestionAPI = Suggestion()
+
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     // popover

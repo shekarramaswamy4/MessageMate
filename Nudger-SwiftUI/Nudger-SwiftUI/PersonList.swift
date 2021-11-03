@@ -8,31 +8,22 @@
 import Foundation
 import SwiftUI
 
-// A struct to store exactly one restaurant's data.
-struct Restaurant: Identifiable {
-    let id = UUID()
-    let name: String
-}
-
-// A view that shows the data for one Restaurant.
-struct RestaurantRow: View {
-    var restaurant: Restaurant
+// A view that shows the data for one Person row.
+struct PersonRow: View {
+    var cmh: ContactMessageHistory
 
     var body: some View {
-        Text("Come and eat at \(restaurant.name)")
+        Text("\(cmh.name)")
     }
 }
 
 struct PersonList: View {
-    let restaurants = [
-        Restaurant(name: "Joe's Original"),
-        Restaurant(name: "The Real Joe's Original"),
-        Restaurant(name: "Original Joe's")
-    ]
-
     var body: some View {
-        List(restaurants) { restaurant in
-            RestaurantRow(restaurant: restaurant)
+        let data = dataAPI.getData()
+        let suggestions = suggestionAPI.makeSuggestions(cmh: data)
+        
+        List(suggestions) { s in
+            PersonRow(cmh: s)
         }
     }
 }
