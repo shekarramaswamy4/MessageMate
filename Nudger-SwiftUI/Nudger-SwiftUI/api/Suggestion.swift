@@ -13,13 +13,13 @@ class Suggestion {
         var suggestions: [ContactMessageHistory] = []
         for cm in cmh {
             if self.scoreContact(cm: cm) == 1 {
-                print(cm.name)
+//                print(cm.name)
                 var i = 0
                 while i < cm.messageData.count && cm.messageData[i].isFromMe == false {
-                    print(cm.messageData[i].text)
+//                    print(cm.messageData[i].text)
                     i += 1
                 }
-                print("open sms:" + String(cm.phoneNum.filter { !$0.isWhitespace }))
+//                print("open sms:" + String(cm.phoneNum.filter { !$0.isWhitespace }))
                 suggestions.append(cm)
             }
         }

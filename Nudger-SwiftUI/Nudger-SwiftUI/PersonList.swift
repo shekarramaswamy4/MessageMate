@@ -18,12 +18,20 @@ struct PersonRow: View {
 }
 
 struct PersonList: View {
+
     var body: some View {
+        Print("Refreshing data...")
+
         let data = dataAPI.getData()
         let suggestions = suggestionAPI.makeSuggestions(cmh: data)
         
-        List(suggestions) { s in
+        return List(suggestions) { s in
             PersonRow(cmh: s)
         }
     }
+}
+
+func printv( _ data : Any) -> EmptyView {
+     print(data)
+     return EmptyView()
 }
