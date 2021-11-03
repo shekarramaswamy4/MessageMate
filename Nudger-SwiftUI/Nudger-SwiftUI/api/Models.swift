@@ -19,3 +19,4 @@ struct ContactMessageHistory {
     let name: String
     let messageData: [MessageData]
 }
+

@@ -1,8 +1,8 @@
 //
 //  Data.swift
-//  Assistant
+//  Nudger-SwiftUI
 //
-//  Created by shekar ramaswamy on 10/31/21.
+//  Created by shekar ramaswamy on 11/2/21.
 //
 
 import Foundation
@@ -161,3 +161,4 @@ ORDER BY
         return numToName
     }
 }
+
