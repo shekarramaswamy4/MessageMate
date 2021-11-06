@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MessageData: Identifiable {
+struct MessageData: Identifiable, Hashable {
     let id = UUID()
     
     let timestamp: Double

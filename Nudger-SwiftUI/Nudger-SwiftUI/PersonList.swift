@@ -13,7 +13,27 @@ struct PersonRow: View {
     var cmh: ContactMessageHistory
 
     var body: some View {
-        Text("\(cmh.name)")
+        let recents = suggestionAPI.getRecentBurst(cm: cmh)
+
+        HStack(alignment: .top, spacing: nil, content: {
+            Text("\(cmh.name)")
+            Button(action: {
+                let urlStr = "sms:" + String(cmh.phoneNum.filter { !$0.isWhitespace })
+                if let url = URL(string: urlStr) {
+                    NSWorkspace.shared.open(url)
+                }
+            }) {
+                Text("Open")
+            }
+        })
+        VStack(alignment: .leading, spacing: nil, content: {
+            ForEach(recents, id: \.self) {
+                md in HStack(alignment: .top, spacing: nil, content: {
+                    Text(String(Int(md.timeDelta / 60 / 60 / 24)) + "d")
+                    Text(md.text)
+                })
+            }
+        })
     }
 }
 
@@ -24,9 +44,10 @@ struct PersonList: View {
 
         let data = dataAPI.getData()
         let suggestions = suggestionAPI.makeSuggestions(cmh: data)
-        
+                
         return List(suggestions) { s in
             PersonRow(cmh: s)
+            Divider()
         }
     }
 }

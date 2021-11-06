@@ -13,17 +13,20 @@ class Suggestion {
         var suggestions: [ContactMessageHistory] = []
         for cm in cmh {
             if self.scoreContact(cm: cm) == 1 {
-//                print(cm.name)
                 var i = 0
                 while i < cm.messageData.count && cm.messageData[i].isFromMe == false {
-//                    print(cm.messageData[i].text)
                     i += 1
                 }
-//                print("open sms:" + String(cm.phoneNum.filter { !$0.isWhitespace }))
                 suggestions.append(cm)
             }
         }
+        suggestions.sort(by: sortSuggestions)
         return suggestions
+    }
+    
+    // Both this and that are required to have at least one message in MessageData
+    private func sortSuggestions(this: ContactMessageHistory, that: ContactMessageHistory) -> Bool {
+        return this.messageData[0].timeDelta < that.messageData[0].timeDelta
     }
     
     // Pretty jank scoring mechanism to determine if a contact should be suggested
@@ -62,7 +65,7 @@ class Suggestion {
         let loweredText = latest.text.lowercased()
         if loweredText.contains("?") {
             return 1
-        } else if loweredText.contains("loved") || loweredText.contains("liked") || loweredText.contains("emphazied") {
+        } else if loweredText.contains("loved") || loweredText.contains("liked") || loweredText.contains("emphasized") {
             // Attempt to filter out reactions
             return 0
         } else if loweredText.count < 4 {
@@ -74,7 +77,7 @@ class Suggestion {
         return 1
     }
     
-    private func getRecentBurst(cm: ContactMessageHistory) -> [MessageData] {
+    func getRecentBurst(cm: ContactMessageHistory) -> [MessageData] {
         if cm.messageData.count == 0 {
             return []
         } else if cm.messageData[0].isFromMe {
