@@ -38,12 +38,11 @@ struct PersonRow: View {
 }
 
 struct PersonList: View {
+    @ObservedObject var apiManager = APIManager()
 
     var body: some View {
-        Print("Refreshing data...")
-
-        let data = dataAPI.getData()
-        let suggestions = suggestionAPI.makeSuggestions(cmh: data)
+        let suggestions = apiManager.suggestionList.data
+        printv(suggestions.count)
                 
         return List(suggestions) { s in
             PersonRow(cmh: s)

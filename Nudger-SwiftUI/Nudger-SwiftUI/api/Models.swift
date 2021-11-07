@@ -24,3 +24,7 @@ struct ContactMessageHistory: Identifiable {
     let messageData: [MessageData]
 }
 
+struct ContactMessageHistoryList {
+    var data: [ContactMessageHistory]
+}
+
