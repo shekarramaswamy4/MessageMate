@@ -38,7 +38,7 @@ struct PersonRow: View {
 }
 
 struct PersonList: View {
-    @ObservedObject var apiManager = APIManager()
+    @ObservedObject var apiM = apiManager
 
     var body: some View {
         let suggestions = apiManager.suggestionList.data
