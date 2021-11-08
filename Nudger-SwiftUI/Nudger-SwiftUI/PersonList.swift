@@ -17,6 +17,7 @@ struct PersonRow: View {
 
         HStack(alignment: .top, spacing: nil, content: {
             Text("\(cmh.name)")
+            Spacer()
             Button(action: {
                 let urlStr = "sms:" + String(cmh.phoneNum.filter { !$0.isWhitespace })
                 if let url = URL(string: urlStr) {
