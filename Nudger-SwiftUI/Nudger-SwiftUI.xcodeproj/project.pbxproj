@@ -23,6 +23,7 @@
 		D0BF815C27324D640019F06D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF815B27324D640019F06D /* Utils.swift */; };
 		D0E529C92732539B0003D8BF /* Extensions+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E529C82732539B0003D8BF /* Extensions+View.swift */; };
 		D0F8B8CA2738981A00D99737 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F8B8C92738981A00D99737 /* APIManager.swift */; };
+		D0F8B8CD2738B68100D99737 /* HotKey in Frameworks */ = {isa = PBXBuildFile; productRef = D0F8B8CC2738B68100D99737 /* HotKey */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0F8B8CD2738B68100D99737 /* HotKey in Frameworks */,
 				D0BF814D273248800019F06D /* GRDB in Frameworks */,
 				D0BF8150273248A50019F06D /* PhoneNumberKit in Frameworks */,
 			);
@@ -132,6 +134,7 @@
 			packageProductDependencies = (
 				D0BF814C273248800019F06D /* GRDB */,
 				D0BF814F273248A50019F06D /* PhoneNumberKit */,
+				D0F8B8CC2738B68100D99737 /* HotKey */,
 			);
 			productName = "Nudger-SwiftUI";
 			productReference = D0BF8126273107230019F06D /* Nudger-SwiftUI.app */;
@@ -164,6 +167,7 @@
 			packageReferences = (
 				D0BF814B273248800019F06D /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 				D0BF814E273248A50019F06D /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
+				D0F8B8CB2738B68100D99737 /* XCRemoteSwiftPackageReference "HotKey" */,
 			);
 			productRefGroup = D0BF8127273107230019F06D /* Products */;
 			projectDirPath = "";
@@ -420,6 +424,14 @@
 				kind = branch;
 			};
 		};
+		D0F8B8CB2738B68100D99737 /* XCRemoteSwiftPackageReference "HotKey" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/soffes/HotKey";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -432,6 +444,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D0BF814E273248A50019F06D /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
 			productName = PhoneNumberKit;
+		};
+		D0F8B8CC2738B68100D99737 /* HotKey */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D0F8B8CB2738B68100D99737 /* XCRemoteSwiftPackageReference "HotKey" */;
+			productName = HotKey;
 		};
 /* End XCSwiftPackageProductDependency section */
 

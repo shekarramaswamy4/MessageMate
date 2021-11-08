@@ -8,12 +8,15 @@
 import Foundation
 import Cocoa
 import SwiftUI
+import HotKey
 
 let dataAPI = Data()
 let suggestionAPI = Suggestion()
 let apiManager = APIManager()
 
 let popover = NSPopover()
+
+let hotKey = HotKey(key: .m, modifiers: [.command, .shift])
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
@@ -35,6 +38,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let button = self.statusBarItem.button {
             button.image = NSImage(named: "home")
             button.action = #selector(togglePopover(_:))
+        }
+        
+        hotKey.keyDownHandler = {
+            self.togglePopover(nil)
         }
     }
     
