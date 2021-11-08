@@ -90,7 +90,7 @@ ORDER BY
         return cmh
     }
     
-    func readAndFormatContacts() -> [String:String] {
+    private func readAndFormatContacts() -> [String:String] {
         var url = try? FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
         url = url!.appendingPathComponent("Application Support", isDirectory: true)
             .appendingPathComponent("AddressBook", isDirectory: true)
@@ -101,11 +101,11 @@ ORDER BY
         // Clean URL string encoding
         cleaned = cleaned.replacingOccurrences(of: "%20", with: " ")
 
-        let fileList = try! FileManager.default.contentsOfDirectory(atPath: cleaned)
+        let fileList = try? FileManager.default.contentsOfDirectory(atPath: cleaned)
         
         var idToName: [String:String] = [:]
         var numToName: [String:String] = [:]
-        for f in fileList {
+        for f in fileList ?? [] {
             if f == ".DS_Store" { continue }
             var dbUrl = url
             dbUrl = dbUrl!.appendingPathComponent(f, isDirectory: true)

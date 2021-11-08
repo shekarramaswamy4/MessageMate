@@ -37,17 +37,56 @@ struct PersonRow: View {
     }
 }
 
+struct NoAccessView: View {
+    var url: URL
+    
+    var body: some View {
+        VStack(alignment: .center, spacing: nil, content: {
+            Text("""
+Please enable full disk access to use this app. In system preferences, click the + button and add the iMessage Assistant.
+
+
+All data is kept on your Mac.
+Please contact Shekar with any questions or concerns!
+""").multilineTextAlignment(TextAlignment.center)
+            Link("Enable access", destination: url)
+        })
+    }
+}
+
+struct FooterView: View {
+    
+    var body: some View {
+        HStack(alignment: .top, spacing: nil, content: {
+            Text("⌘⇧M to open")
+            Spacer()
+            Button(action: {
+                NSApp.terminate(nil)
+            }) {
+                Text("Quit")
+            }
+        })
+    }
+}
+
 struct PersonList: View {
     @ObservedObject var apiM = apiManager
 
     var body: some View {
         let suggestions = apiManager.suggestionList.data
-        printv(suggestions.count)
-                
-        return List(suggestions) { s in
-            PersonRow(cmh: s)
-            Divider()
-        }
+        
+        return VStack(alignment: .center, spacing: nil, content: {
+            if apiM.hasFullDiskAccess {
+                List(suggestions) { s in
+                    PersonRow(cmh: s)
+                    Divider()
+                }
+            } else {
+                NoAccessView(url: apiM.fullDiskAccessURL)
+                    .frame(width: 400, height: 300, alignment: .center)
+            }
+            FooterView().padding()
+        })
     }
 }
 
