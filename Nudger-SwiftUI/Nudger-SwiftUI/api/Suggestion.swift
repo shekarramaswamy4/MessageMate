@@ -10,8 +10,22 @@ import Foundation
 class Suggestion {
     
     func makeSuggestions(cmh: [ContactMessageHistory]) -> [ContactMessageHistory] {
+        var dismissed = defaults.object(forKey: "dismissedDict") as? [String:Double] ?? [:]
+        
         var suggestions: [ContactMessageHistory] = []
         for cm in cmh {
+            if cm.messageData.count == 0 {
+                continue
+            } else if dismissed.index(forKey: cm.phoneNum) != nil {
+                let val = dismissed[cm.phoneNum]!
+                // Been dismissed
+                if val == cm.messageData[0].timestamp {
+                    continue
+                } else { // New messages have come in, so delete entry
+                    dismissed.removeValue(forKey: cm.phoneNum)
+                }
+            }
+            
             if self.scoreContact(cm: cm) == 1 {
                 var i = 0
                 while i < cm.messageData.count && cm.messageData[i].isFromMe == false {
@@ -21,6 +35,8 @@ class Suggestion {
             }
         }
         suggestions.sort(by: sortSuggestions)
+        
+        defaults.set(dismissed, forKey: "dismissedDict")
         return suggestions
     }
     

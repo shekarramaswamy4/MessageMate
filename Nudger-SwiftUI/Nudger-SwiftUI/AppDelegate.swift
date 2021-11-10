@@ -13,6 +13,7 @@ import HotKey
 let dataAPI = Data()
 let suggestionAPI = Suggestion()
 let apiManager = APIManager()
+let defaults = UserDefaults.standard
 
 let popover = NSPopover()
 

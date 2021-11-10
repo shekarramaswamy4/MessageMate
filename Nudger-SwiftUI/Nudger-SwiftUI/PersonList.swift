@@ -19,6 +19,11 @@ struct PersonRow: View {
             Text("\(cmh.name)")
             Spacer()
             Button(action: {
+                apiManager.dismissSuggestion(cmh: cmh)
+            }) {
+                Text("Dismiss")
+            }
+            Button(action: {
                 let urlStr = "sms:" + String(cmh.phoneNum.filter { !$0.isWhitespace })
                 if let url = URL(string: urlStr) {
                     NSWorkspace.shared.open(url)
