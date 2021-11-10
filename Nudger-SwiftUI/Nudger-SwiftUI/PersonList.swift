@@ -71,7 +71,7 @@ struct FooterView: View {
             }) {
                 Text("Quit")
             }
-        })
+        }).foregroundColor(.primary)
     }
 }
 
