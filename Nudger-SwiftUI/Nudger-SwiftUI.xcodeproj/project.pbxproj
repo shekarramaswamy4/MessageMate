@@ -24,6 +24,7 @@
 		D0E529C92732539B0003D8BF /* Extensions+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E529C82732539B0003D8BF /* Extensions+View.swift */; };
 		D0F8B8CA2738981A00D99737 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F8B8C92738981A00D99737 /* APIManager.swift */; };
 		D0F8B8CD2738B68100D99737 /* HotKey in Frameworks */ = {isa = PBXBuildFile; productRef = D0F8B8CC2738B68100D99737 /* HotKey */; };
+		D0F8B8CF273D65F500D99737 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F8B8CE273D65F500D99737 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		D0BF815B27324D640019F06D /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		D0E529C82732539B0003D8BF /* Extensions+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+View.swift"; sourceTree = "<group>"; };
 		D0F8B8C92738981A00D99737 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		D0F8B8CE273D65F500D99737 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 				D0BF815927324D5B0019F06D /* Models.swift */,
 				D0BF815B27324D640019F06D /* Utils.swift */,
 				D0F8B8C92738981A00D99737 /* APIManager.swift */,
+				D0F8B8CE273D65F500D99737 /* Constants.swift */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 				D0BF812C273107230019F06D /* ContentView.swift in Sources */,
 				D0BF815627324D490019F06D /* Data.swift in Sources */,
 				D0BF8136273107270019F06D /* Nudger_SwiftUI.xcdatamodeld in Sources */,
+				D0F8B8CF273D65F500D99737 /* Constants.swift in Sources */,
 				D0BF813E2731080A0019F06D /* AppDelegate.swift in Sources */,
 				D0BF81412732479F0019F06D /* PersonList.swift in Sources */,
 				D0BF812A273107230019F06D /* Nudger_SwiftUIApp.swift in Sources */,

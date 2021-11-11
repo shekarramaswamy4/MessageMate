@@ -10,7 +10,7 @@ import Foundation
 class Suggestion {
     
     func makeSuggestions(cmh: [ContactMessageHistory]) -> [ContactMessageHistory] {
-        var dismissed = defaults.object(forKey: "dismissedDict") as? [String:Double] ?? [:]
+        var dismissed = defaults.object(forKey: DefaultsConstants.dismissedDict) as? [String:Double] ?? [:]
         
         var suggestions: [ContactMessageHistory] = []
         for cm in cmh {
@@ -36,7 +36,7 @@ class Suggestion {
         }
         suggestions.sort(by: sortSuggestions)
         
-        defaults.set(dismissed, forKey: "dismissedDict")
+        defaults.set(dismissed, forKey: DefaultsConstants.dismissedDict)
         return suggestions
     }
     

@@ -10,13 +10,13 @@ import GRDB
 
 class Data {
     
-    func getData() -> [ContactMessageHistory] {
+    func getData() -> [ContactMessageHistory]? {
         let numToName = self.readAndFormatContacts()
         let data = self.readAndFormatChats(numToName: numToName)
         return data
     }
     
-    private func readAndFormatChats(numToName: [String:String]) -> [ContactMessageHistory] {
+    private func readAndFormatChats(numToName: [String:String]) -> [ContactMessageHistory]? {
         var url = try? FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
         url = url!.appendingPathComponent("Messages", isDirectory: true).appendingPathComponent("chat.db", isDirectory: false)
                 
@@ -78,7 +78,9 @@ ORDER BY
                 }
             }
         } catch {
-            print(error)
+            if error.localizedDescription.contains("authorization denied") {
+                return nil
+            }
         }
         
         var cmh: [ContactMessageHistory] = []

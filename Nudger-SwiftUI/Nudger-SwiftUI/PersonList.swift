@@ -60,6 +60,16 @@ Please contact Shekar with any questions or concerns!
     }
 }
 
+struct NoSuggestionsView: View {
+    var body: some View {
+        VStack(alignment: .center, spacing: nil, content: {
+            Text("""
+No suggestions! Enjoy the peace of mind. 😌
+""").multilineTextAlignment(TextAlignment.center)
+        })
+    }
+}
+
 struct FooterView: View {
     
     var body: some View {
@@ -83,9 +93,14 @@ struct PersonList: View {
         
         return VStack(alignment: .center, spacing: nil, content: {
             if apiM.hasFullDiskAccess {
-                List(suggestions) { s in
-                    PersonRow(cmh: s)
-                    Divider()
+                if suggestions.count == 0 {
+                    NoSuggestionsView()
+                        .frame(width: 400, height: 300, alignment: .center)
+                } else {
+                    List(suggestions) { s in
+                        PersonRow(cmh: s)
+                        Divider()
+                    }
                 }
             } else {
                 NoAccessView(url: apiM.fullDiskAccessURL)
