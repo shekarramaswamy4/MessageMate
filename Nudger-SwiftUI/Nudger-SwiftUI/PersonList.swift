@@ -31,7 +31,9 @@ struct PersonRow: View {
                 apiManager.dismissSuggestion(cmh: cmh)
             }) {
                 Text("Done")
-            }
+            }.background(Color.blue)
+                .foregroundColor(Color.white)
+                .cornerRadius(4)
         })
         VStack(alignment: .leading, spacing: nil, content: {
             ForEach(recents, id: \.self) {
