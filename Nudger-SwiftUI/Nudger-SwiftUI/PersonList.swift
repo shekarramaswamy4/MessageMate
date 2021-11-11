@@ -17,12 +17,8 @@ struct PersonRow: View {
 
         HStack(alignment: .top, spacing: nil, content: {
             Text("\(cmh.name)")
+                .bold()
             Spacer()
-            Button(action: {
-                apiManager.dismissSuggestion(cmh: cmh)
-            }) {
-                Text("Dismiss")
-            }
             Button(action: {
                 let urlStr = "sms:" + String(cmh.phoneNum.filter { !$0.isWhitespace })
                 if let url = URL(string: urlStr) {
@@ -30,6 +26,11 @@ struct PersonRow: View {
                 }
             }) {
                 Text("Open")
+            }
+            Button(action: {
+                apiManager.dismissSuggestion(cmh: cmh)
+            }) {
+                Text("Done")
             }
         })
         VStack(alignment: .leading, spacing: nil, content: {
