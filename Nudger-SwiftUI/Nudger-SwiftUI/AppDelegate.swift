@@ -16,12 +16,11 @@ let apiManager = APIManager()
 let defaults = UserDefaults.standard
 
 let popover = NSPopover()
+let statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
 
 let hotKey = HotKey(key: .m, modifiers: [.command, .shift])
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-
-    var statusBarItem: NSStatusItem!
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create the SwiftUI view (i.e. the content).
@@ -33,13 +32,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         popover.behavior = .transient
         popover.contentViewController = NSHostingController(rootView: contentView)
         
-        // Create the status bar item
-        self.statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
-        
-        if let button = self.statusBarItem.button {
-            button.image = NSImage(named: "home")
+        if let button = statusBarItem.button {
             button.action = #selector(togglePopover(_:))
         }
+        statusBarItem.setMenuText(title: "💬")
         
         hotKey.keyDownHandler = {
             self.togglePopover(nil)
@@ -48,7 +44,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // Toggles popover
     @objc func togglePopover(_ sender: AnyObject?) {
-        if let button = self.statusBarItem.button {
+        if let button = statusBarItem.button {
             if popover.isShown {
                 popover.performClose(sender)
             } else {

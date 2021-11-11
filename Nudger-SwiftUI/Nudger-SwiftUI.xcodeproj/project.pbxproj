@@ -25,6 +25,7 @@
 		D0F8B8CA2738981A00D99737 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F8B8C92738981A00D99737 /* APIManager.swift */; };
 		D0F8B8CD2738B68100D99737 /* HotKey in Frameworks */ = {isa = PBXBuildFile; productRef = D0F8B8CC2738B68100D99737 /* HotKey */; };
 		D0F8B8CF273D65F500D99737 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F8B8CE273D65F500D99737 /* Constants.swift */; };
+		D0F8B8D2273D6ABB00D99737 /* NSStatusItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F8B8D1273D6ABB00D99737 /* NSStatusItem+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		D0E529C82732539B0003D8BF /* Extensions+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+View.swift"; sourceTree = "<group>"; };
 		D0F8B8C92738981A00D99737 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		D0F8B8CE273D65F500D99737 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		D0F8B8D1273D6ABB00D99737 /* NSStatusItem+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSStatusItem+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 		D0BF8128273107230019F06D /* Nudger-SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				D0F8B8D0273D6AA800D99737 /* Extensions */,
 				D0BF815427324D0C0019F06D /* api */,
 				D0BF813F27310A600019F06D /* Info.plist */,
 				D0BF813D2731080A0019F06D /* AppDelegate.swift */,
@@ -116,6 +119,14 @@
 				D0F8B8CE273D65F500D99737 /* Constants.swift */,
 			);
 			path = api;
+			sourceTree = "<group>";
+		};
+		D0F8B8D0273D6AA800D99737 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D0F8B8D1273D6ABB00D99737 /* NSStatusItem+Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,6 +214,7 @@
 				D0BF8133273107270019F06D /* Persistence.swift in Sources */,
 				D0BF815C27324D640019F06D /* Utils.swift in Sources */,
 				D0BF812C273107230019F06D /* ContentView.swift in Sources */,
+				D0F8B8D2273D6ABB00D99737 /* NSStatusItem+Extensions.swift in Sources */,
 				D0BF815627324D490019F06D /* Data.swift in Sources */,
 				D0BF8136273107270019F06D /* Nudger_SwiftUI.xcdatamodeld in Sources */,
 				D0F8B8CF273D65F500D99737 /* Constants.swift in Sources */,
