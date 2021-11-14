@@ -55,6 +55,12 @@ class Suggestion {
         var allORC = true
         for m in rm {
             let scalars = m.text.unicodeScalars
+            
+            // idk what this case really means in practice but it's a quick fix
+            if scalars.count == 0 {
+                allORC = false
+                break
+            }
             if scalars[scalars.startIndex].value != 65533 && scalars[scalars.startIndex].value != 65532 {
                 allORC = false
                 break
