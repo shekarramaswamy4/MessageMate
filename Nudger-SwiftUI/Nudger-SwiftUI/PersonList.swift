@@ -67,7 +67,9 @@ struct NoSuggestionsView: View {
     var body: some View {
         VStack(alignment: .center, spacing: nil, content: {
             Text("""
-No suggestions! Enjoy the peace of mind. 😌
+No suggestions!
+
+Enjoy the peace of mind. 😌
 """).multilineTextAlignment(TextAlignment.center)
         })
     }
