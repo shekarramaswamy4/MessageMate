@@ -81,6 +81,7 @@ ORDER BY
             if error.localizedDescription.contains("authorization denied") {
                 return nil
             }
+            print(error)
         }
         
         var cmh: [ContactMessageHistory] = []
@@ -112,11 +113,11 @@ ORDER BY
             var dbUrl = url
             dbUrl = dbUrl!.appendingPathComponent(f, isDirectory: true)
                 .appendingPathComponent("AddressBook-v22.abcddb", isDirectory: false)
-                    
+            
             do {
                 let dbQueue = try DatabaseQueue(path: dbUrl!.absoluteString)
                 
-                var query = "select Z_PK as id, ZSORTINGFIRSTNAME as name from ZABCDRECORD order by Z_PK asc"
+                let query = "select Z_PK as id, ZSORTINGFIRSTNAME as name from ZABCDRECORD order by Z_PK asc"
                 try dbQueue.read { db in
                     let rows = try Row.fetchCursor(db, sql: query)
                     while let row = try rows.next() {
@@ -133,8 +134,14 @@ ORDER BY
                         idToName[id!] = Utils.cleanName(name: name!)
                     }
                 }
+            } catch {
+                print(error)
+            }
+            
+            do {
+                let dbQueue = try DatabaseQueue(path: dbUrl!.absoluteString)
                 
-                query = "select ZOWNER as id, ZFULLNUMBER as number from ZABCDPHONENUMBER order by ZOWNER asc"
+                let query = "select ZOWNER as id, ZFULLNUMBER as number from ZABCDPHONENUMBER order by ZOWNER asc"
                 try dbQueue.read { db in
                     let rows = try Row.fetchCursor(db, sql: query)
                     while let row = try rows.next() {

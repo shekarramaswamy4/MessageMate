@@ -63,23 +63,28 @@ class APIManager: ObservableObject {
     }
     
     private func perform() {
-        let data = dataAPI.getData()
-        if data == nil {
-            self.hasFullDiskAccess = false
-            
+        DispatchQueue.global().async {
+            let data = dataAPI.getData()
+
             DispatchQueue.main.async {
-                statusBarItem.setMenuText(title: "⚠️")
+                if data == nil {
+                    self.hasFullDiskAccess = false
+                    
+                    DispatchQueue.main.async {
+                        statusBarItem.setMenuText(title: "⚠️")
+                    }
+                    return
+                } else if self.hasFullDiskAccess == false {
+                    // To prevent unecessary re-renders
+                    self.hasFullDiskAccess = true
+                }
+                
+                
+                let suggestions = suggestionAPI.makeSuggestions(cmh: data!)
+                self.suggestionList = ContactMessageHistoryList(data: suggestions)
+                
+                self.setMenuText()
             }
-            return
-        } else if self.hasFullDiskAccess == false {
-            // To prevent unecessary re-renders
-            self.hasFullDiskAccess = true
         }
-        
-        
-        let suggestions = suggestionAPI.makeSuggestions(cmh: data!)
-        self.suggestionList = ContactMessageHistoryList(data: suggestions)
-        
-        setMenuText()
     }
 }
