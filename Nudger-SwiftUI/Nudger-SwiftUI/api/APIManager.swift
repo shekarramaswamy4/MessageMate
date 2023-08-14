@@ -10,6 +10,7 @@ import Foundation
 class APIManager: ObservableObject {
     @Published var suggestionList = ContactMessageHistoryList(data: [])
     @Published var hasFullDiskAccess = true
+    @Published var firstLoad = true
     
     var fullDiskAccessURL: URL!
     
@@ -67,6 +68,8 @@ class APIManager: ObservableObject {
             let data = dataAPI.getData()
 
             DispatchQueue.main.async {
+                self.firstLoad = false
+                
                 if data == nil {
                     self.hasFullDiskAccess = false
                     
