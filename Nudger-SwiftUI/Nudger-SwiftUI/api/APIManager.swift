@@ -24,7 +24,7 @@ class APIManager: ObservableObject {
         }
         
         perform()
-        // TODO: this can probably be optimized to time with popover open / closing
+        // TODO: optimize this to run continuously. once a perform is done, kick off another one
         Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { _ in
             if !popover.isShown {
                 self.perform()

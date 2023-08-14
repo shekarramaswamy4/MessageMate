@@ -71,6 +71,7 @@ class Suggestion {
         }
         
         // Check if recent burst occurred over a day ago
+        // Computed in seconds
         if rm[0].timeDelta < 86400 {
             return 0
         }

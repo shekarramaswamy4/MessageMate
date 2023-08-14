@@ -38,8 +38,7 @@ struct PersonRow: View {
         VStack(alignment: .leading, spacing: nil, content: {
             ForEach(recents, id: \.self) {
                 md in HStack(alignment: .top, spacing: nil, content: {
-                    // TODO: compute in terms of hours sometimes
-                    Text(String(Int(md.timeDelta / 60 / 60 / 24)) + "d")
+                    Text(convertTime(d: md.timeDelta))
                     Text(md.text)
                 })
             }
@@ -57,7 +56,7 @@ Please enable full disk access to use the iMessage Assistant.
 
 No data ever leaves your Mac.
 """).multilineTextAlignment(TextAlignment.center)
-            Button(action: {}) {
+            Button(action: {NSWorkspace.shared.open(url)}) {
                 Link("Enable Access", destination: url).foregroundColor(Color.black)
             }.background(Color.blue).cornerRadius(4)
         })
@@ -78,7 +77,9 @@ struct LoadingFirstTimeView: View {
     var body: some View {
         VStack(alignment: .center, spacing: nil, content: {
             Text("""
-Loading your suggestions! The icon will change once finished.
+Loading your suggestions!
+
+The icon will change once finished.
 """).multilineTextAlignment(TextAlignment.center)
         })
     }
@@ -132,4 +133,14 @@ struct PersonList: View {
 func printv( _ data : Any) -> EmptyView {
      print(data)
      return EmptyView()
+}
+
+func convertTime(d: Double) -> String {
+    let days = Int(d / 60 / 60 / 24)
+    if days != 0 {
+        return String(days) + "d"
+    }
+    
+    let hours = Int(d / 60 / 60)
+    return String(hours) + "h"
 }
