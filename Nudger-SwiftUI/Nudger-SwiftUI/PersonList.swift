@@ -95,6 +95,7 @@ struct PersonList: View {
         let suggestions = apiManager.suggestionList.data
         
         return VStack(alignment: .center, spacing: nil, content: {
+            // TODO: handle initial load
             if apiM.hasFullDiskAccess {
                 if suggestions.count == 0 {
                     NoSuggestionsView()

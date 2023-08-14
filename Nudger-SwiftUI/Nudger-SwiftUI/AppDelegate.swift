@@ -21,6 +21,7 @@ let statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusIt
 let hotKey = HotKey(key: .m, modifiers: [.command, .shift])
 
 class AppDelegate: NSObject, NSApplicationDelegate {
+    var eventMonitor: EventMonitor?
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create the SwiftUI view (i.e. the content).
@@ -35,11 +36,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let button = statusBarItem.button {
             button.action = #selector(togglePopover(_:))
         }
-        statusBarItem.setMenuText(title: "💬")
+        statusBarItem.setMenuText(title: "💬 (🔄)")
         
         hotKey.keyDownHandler = {
             self.togglePopover(nil)
         }
+        
+        eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
+            if popover.isShown {
+                if ((popover.contentViewController?.view.frame.contains(event!.locationInWindow)) != nil) {
+                    self?.togglePopover(nil)
+                }
+            }
+        }
+        eventMonitor?.start()
     }
     
     // Toggles popover

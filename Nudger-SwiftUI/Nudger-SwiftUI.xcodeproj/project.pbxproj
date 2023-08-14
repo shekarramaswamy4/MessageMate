@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D01C146A2A89E0F200210A62 /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01C14692A89E0F200210A62 /* EventMonitor.swift */; };
 		D0BF812A273107230019F06D /* Nudger_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF8129273107230019F06D /* Nudger_SwiftUIApp.swift */; };
 		D0BF812C273107230019F06D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF812B273107230019F06D /* ContentView.swift */; };
 		D0BF812E273107270019F06D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0BF812D273107270019F06D /* Assets.xcassets */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D01C14692A89E0F200210A62 /* EventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMonitor.swift; sourceTree = "<group>"; };
 		D0BF8126273107230019F06D /* Nudger-SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nudger-SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BF8129273107230019F06D /* Nudger_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nudger_SwiftUIApp.swift; sourceTree = "<group>"; };
 		D0BF812B273107230019F06D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				D0BF8134273107270019F06D /* Nudger_SwiftUI.xcdatamodeld */,
 				D0BF812F273107270019F06D /* Preview Content */,
 				D0E529C82732539B0003D8BF /* Extensions+View.swift */,
+				D01C14692A89E0F200210A62 /* EventMonitor.swift */,
 			);
 			path = "Nudger-SwiftUI";
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 				D0BF815C27324D640019F06D /* Utils.swift in Sources */,
 				D0BF812C273107230019F06D /* ContentView.swift in Sources */,
 				D0F8B8D2273D6ABB00D99737 /* NSStatusItem+Extensions.swift in Sources */,
+				D01C146A2A89E0F200210A62 /* EventMonitor.swift in Sources */,
 				D0BF815627324D490019F06D /* Data.swift in Sources */,
 				D0BF8136273107270019F06D /* Nudger_SwiftUI.xcdatamodeld in Sources */,
 				D0F8B8CF273D65F500D99737 /* Constants.swift in Sources */,

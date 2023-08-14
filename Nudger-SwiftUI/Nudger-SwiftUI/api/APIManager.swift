@@ -55,7 +55,7 @@ class APIManager: ObservableObject {
     private func setMenuText() {
         DispatchQueue.main.async {
             if self.suggestionList.data.count == 0 {
-                statusBarItem.setMenuText(title: "💬")
+                statusBarItem.setMenuText(title: "💬 (0)")
             } else {
                 statusBarItem.setMenuText(title: "💬 (\(self.suggestionList.data.count))")
             }
