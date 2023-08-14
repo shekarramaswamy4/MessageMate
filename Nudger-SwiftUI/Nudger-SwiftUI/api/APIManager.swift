@@ -14,6 +14,8 @@ class APIManager: ObservableObject {
     
     var fullDiskAccessURL: URL!
     
+    var isProcessing = false
+    
     init() {
         let urlStr = "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles"
         if let url = URL(string: urlStr) {
@@ -23,11 +25,14 @@ class APIManager: ObservableObject {
             fullDiskAccessURL = URL(string: "https://www.google.com/search?q=how%20to%20enable%20full%20disk%20access%20for%20mac%20app")
         }
         
-        perform()
-        // TODO: optimize this to run continuously. once a perform is done, kick off another one
-        Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { _ in
-            if !popover.isShown {
+        startPerforming()
+    }
+    
+    private func startPerforming() {
+        DispatchQueue.global().async {
+            while true {
                 self.perform()
+                Thread.sleep(forTimeInterval: 5)
             }
         }
     }
@@ -64,6 +69,12 @@ class APIManager: ObservableObject {
     }
     
     private func perform() {
+        if isProcessing {
+            return
+        }
+        
+        isProcessing = true
+        
         DispatchQueue.global().async {
             let data = dataAPI.getData()
 
@@ -76,6 +87,8 @@ class APIManager: ObservableObject {
                     DispatchQueue.main.async {
                         statusBarItem.setMenuText(title: "⚠️")
                     }
+                    
+                    // Purposefully mark processing as not finished because we don't have disk access
                     return
                 } else if self.hasFullDiskAccess == false {
                     // To prevent unecessary re-renders
@@ -87,6 +100,8 @@ class APIManager: ObservableObject {
                 self.suggestionList = ContactMessageHistoryList(data: suggestions)
                 
                 self.setMenuText()
+                
+                self.isProcessing = false
             }
         }
     }
