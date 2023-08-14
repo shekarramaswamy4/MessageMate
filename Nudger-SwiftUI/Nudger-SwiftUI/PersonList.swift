@@ -51,16 +51,15 @@ struct NoAccessView: View {
     var url: URL
     
     var body: some View {
-        VStack(alignment: .center, spacing: nil, content: {
+        VStack(alignment: .center, spacing: 24, content: {
             Text("""
-Please enable full disk access to use this app. In system preferences, click the + button and add the iMessage Assistant.
+Please enable full disk access to use the iMessage Assistant.
 
-
-No data leaves your Mac, and the code is open source.
-Please contact Shekar with any concerns!
+No data ever leaves your Mac.
 """).multilineTextAlignment(TextAlignment.center)
-            // TODO: make this button more obvious
-            Link("Enable access", destination: url)
+            Button(action: {}) {
+                Link("Enable Access", destination: url).foregroundColor(Color.black)
+            }.background(Color.blue).cornerRadius(4)
         })
     }
 }
