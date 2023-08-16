@@ -47,6 +47,7 @@ class APIManager: ObservableObject {
         
         dismissed![cmh.phoneNum] = cmh.messageData[0].timestamp
         defaults.set(dismissed, forKey: DefaultsConstants.dismissedDict)
+        defaults.synchronize()
         
         for i in 0...self.suggestionList.data.count - 1 {
             if self.suggestionList.data[i].phoneNum == cmh.phoneNum {

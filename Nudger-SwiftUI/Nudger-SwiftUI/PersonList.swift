@@ -81,7 +81,7 @@ struct LoadingFirstTimeView: View {
             Text("""
 Loading your suggestions!
 
-The icon will change once finished.
+The icon will change soon.
 """).multilineTextAlignment(TextAlignment.center)
         })
     }

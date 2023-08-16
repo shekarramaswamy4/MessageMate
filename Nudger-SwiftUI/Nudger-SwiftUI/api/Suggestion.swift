@@ -37,6 +37,7 @@ class Suggestion {
         suggestions.sort(by: sortSuggestions)
         
         defaults.set(dismissed, forKey: DefaultsConstants.dismissedDict)
+        defaults.synchronize()
         return suggestions
     }
     
