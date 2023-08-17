@@ -1,5 +1,5 @@
 # MessageMate
-MessageMate is your reliable companion for staying on top of your texts. Life gets busy, and we all forget to respond to people
+MessageMate is your reliable companion for staying on top of your texts. Never apologize again for missing a text - MessageMate has your back!
 
 ## Details 
 MessageMate asks for full disk access, which means that it can read the contents of your machine. Don't worry! MessageMate makes **no** network requests, which means your data **never** leaves your laptop. **It's completely private.**
