@@ -364,7 +364,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Nudger-SwiftUI/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = iFollowUp;
+				INFOPLIST_KEY_CFBundleDisplayName = RemindMe;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -396,7 +396,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Nudger-SwiftUI/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = iFollowUp;
+				INFOPLIST_KEY_CFBundleDisplayName = RemindMe;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
