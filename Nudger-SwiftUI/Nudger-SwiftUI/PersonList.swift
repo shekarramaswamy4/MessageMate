@@ -11,10 +11,10 @@ import SwiftUI
 // A view that shows the data for one Person row.
 struct PersonRow: View {
     var cmh: ContactMessageHistory
-
+    
     var body: some View {
         let recents = suggestionAPI.getRecentBurst(cm: cmh)
-
+        
         HStack(alignment: .top, spacing: nil, content: {
             Text("\(cmh.name)")
                 .bold()
@@ -67,7 +67,7 @@ struct NoSuggestionsView: View {
     var body: some View {
         VStack(alignment: .center, spacing: nil, content: {
             Text("""
-No suggestions!
+No reminders!
 
 Enjoy the peace of mind. 😌
 """).multilineTextAlignment(TextAlignment.center)
@@ -79,33 +79,99 @@ struct LoadingFirstTimeView: View {
     var body: some View {
         VStack(alignment: .center, spacing: nil, content: {
             Text("""
-Loading your suggestions!
+Loading your reminders!
 
-The icon will change soon.
+This one-time setup should take a few minutes.
 """).multilineTextAlignment(TextAlignment.center)
         })
     }
 }
 
 struct FooterView: View {
+    var showRemindMeAfterPrompt: Bool
+    
+    @ObservedObject var apiM = apiManager
+    
+    @State private var remindWindow: String = "24"
+    @State private var canBeDone: Bool = false
+    @State private var inputError: Bool = false
+
+    init(showRemindMeAfterPrompt: Bool) {
+        self.showRemindMeAfterPrompt = showRemindMeAfterPrompt
+        _remindWindow = State(initialValue: "\(apiM.remindWindow)")
+    }
     
     var body: some View {
-        // TODO: customize time window
         HStack(alignment: .top, spacing: nil, content: {
-            Text("⌘⇧M to open")
+            if showRemindMeAfterPrompt {
+                HStack {
+                    Text("Remind me after")
+                    
+                    TextField("", text: $remindWindow)
+                        .frame(width: 40)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(inputError ? Color.red : Color.primary)
+                        .onAppear {
+                            DispatchQueue.main.async {
+                                NSApp.keyWindow?.makeFirstResponder(nil)
+                            }
+                        }
+                    
+                    Text("h")
+                    
+                    if canBeDone {
+                        Button(action: {
+                            // Perform action when done button is tapped
+                            // For example: schedule reminder with remindHours value
+                            canBeDone = false
+                            apiM.setRemindWindow(window: Int(remindWindow) ?? Constants.defaultRemindWindow)
+                        }) {
+                            Text("Done")
+                        }
+                    }
+                }.onChange(of: remindWindow) { newValue in
+                    let intValue = Int(newValue)
+                    if intValue == nil {
+                        canBeDone = false
+                        inputError = true
+                        return
+                    }
+                    if intValue! <= 0 {
+                        canBeDone = false
+                        inputError = true
+                        return
+                    }
+                    inputError = false
+                    if apiM.remindWindow == intValue! {
+                        canBeDone = false
+                        return
+                    }
+                    canBeDone = true
+                }
+            }
+            
             Spacer()
+            
             Button(action: {
                 NSApp.terminate(nil)
             }) {
                 Text("Quit")
             }
         }).foregroundColor(.primary)
+            .onReceive(apiM.$remindWindow) { newValue in
+            // This onReceive is essentially a proxy for when the popup reopens
+            remindWindow = "\(newValue)"
+            inputError = false
+            DispatchQueue.main.async {
+                NSApp.keyWindow?.makeFirstResponder(nil)
+            }
+        }
     }
 }
 
 struct PersonList: View {
     @ObservedObject var apiM = apiManager
-
+    
     var body: some View {
         let suggestions = apiManager.suggestionList.data
         
@@ -114,27 +180,30 @@ struct PersonList: View {
                 if apiM.firstLoad {
                     LoadingFirstTimeView()
                         .frame(width: 400, height: 300, alignment: .center)
+                    FooterView(showRemindMeAfterPrompt: false).padding()
                 } else if suggestions.count == 0 {
                     NoSuggestionsView()
                         .frame(width: 400, height: 300, alignment: .center)
+                    FooterView(showRemindMeAfterPrompt: true).padding()
                 } else {
                     List(suggestions) { s in
                         PersonRow(cmh: s)
                         Divider()
                     }
+                    FooterView(showRemindMeAfterPrompt: true).padding()
                 }
             } else {
                 NoAccessView(url: apiM.fullDiskAccessURL)
                     .frame(width: 400, height: 300, alignment: .center)
+                FooterView(showRemindMeAfterPrompt: false).padding()
             }
-            FooterView().padding()
         })
     }
 }
 
 func printv( _ data : Any) -> EmptyView {
-     print(data)
-     return EmptyView()
+    print(data)
+    return EmptyView()
 }
 
 func convertTime(d: Double) -> String {

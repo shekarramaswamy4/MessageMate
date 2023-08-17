@@ -7,6 +7,12 @@
 
 import Foundation
 
+// For user defaults
 struct DefaultsConstants {
     static let dismissedDict = "dismissedDict"
+    static let remindWindow = "remindWindow"
+}
+
+struct Constants {
+    static let defaultRemindWindow = 12
 }

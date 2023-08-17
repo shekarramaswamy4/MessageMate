@@ -11,6 +11,7 @@ class APIManager: ObservableObject {
     @Published var suggestionList = ContactMessageHistoryList(data: [])
     @Published var hasFullDiskAccess = true
     @Published var firstLoad = true
+    @Published var remindWindow = Constants.defaultRemindWindow
     
     var fullDiskAccessURL: URL!
     
@@ -25,7 +26,29 @@ class APIManager: ObservableObject {
             fullDiskAccessURL = URL(string: "https://www.google.com/search?q=how%20to%20enable%20full%20disk%20access%20for%20mac%20app")
         }
         
+        remindWindow = defaults.object(forKey: DefaultsConstants.remindWindow) as? Int ?? Constants.defaultRemindWindow
+        
         startPerforming()
+    }
+    
+    func setRemindWindow(window: Int) {
+        remindWindow = window
+        firstLoad = true
+        defaults.set(window, forKey: DefaultsConstants.remindWindow)
+        defaults.synchronize()
+        
+        popover.performClose(nil)
+        DispatchQueue.main.async {
+            statusBarItem.setMenuText(title: "💬 (🔄)")
+        }
+        
+        // TODO: watch out for race condition
+    }
+    
+    func forceUpdateRemindWindow() {
+        let temp = remindWindow
+        remindWindow = 0
+        remindWindow = temp
     }
     
     private func startPerforming() {
@@ -97,7 +120,7 @@ class APIManager: ObservableObject {
                 }
                 
                 
-                let suggestions = suggestionAPI.makeSuggestions(cmh: data!)
+                let suggestions = suggestionAPI.makeSuggestions(cmh: data!, remindWindow: self.remindWindow)
                 self.suggestionList = ContactMessageHistoryList(data: suggestions)
                 
                 self.setMenuText()

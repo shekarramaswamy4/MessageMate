@@ -9,7 +9,7 @@ import Foundation
 
 class Suggestion {
     
-    func makeSuggestions(cmh: [ContactMessageHistory]) -> [ContactMessageHistory] {
+    func makeSuggestions(cmh: [ContactMessageHistory], remindWindow: Int) -> [ContactMessageHistory] {
         var dismissed = defaults.object(forKey: DefaultsConstants.dismissedDict) as? [String:Double] ?? [:]
         
         var suggestions: [ContactMessageHistory] = []
@@ -26,7 +26,7 @@ class Suggestion {
                 }
             }
             
-            if self.scoreContact(cm: cm) == 1 {
+            if self.scoreContact(cm: cm, remindWindow: remindWindow) == 1 {
                 var i = 0
                 while i < cm.messageData.count && cm.messageData[i].isFromMe == false {
                     i += 1
@@ -47,7 +47,7 @@ class Suggestion {
     }
     
     // Pretty jank scoring mechanism to determine if a contact should be suggested
-    private func scoreContact(cm: ContactMessageHistory) -> Float {
+    private func scoreContact(cm: ContactMessageHistory, remindWindow: Int) -> Float {
         let rm = self.getRecentBurst(cm: cm)
         if rm.count == 0 {
             return 0
@@ -73,7 +73,8 @@ class Suggestion {
         
         // Check if recent burst occurred over a day ago
         // Computed in seconds
-        if rm[0].timeDelta < 86400 {
+        // remindWindow is in hours
+        if rm[0].timeDelta < Double(remindWindow) * 60 * 60 {
             return 0
         }
         

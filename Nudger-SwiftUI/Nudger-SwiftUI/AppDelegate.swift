@@ -58,6 +58,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if popover.isShown {
                 popover.performClose(sender)
             } else {
+                // This is a hack to forcibly make the default text of the text view equal to what the apiManager's current remindWindow is
+                // This ensures the user's previous value that they hadn't confirmed is wiped
+                apiManager.forceUpdateRemindWindow()
                 popover.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
             }
         }
