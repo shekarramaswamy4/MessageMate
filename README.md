@@ -1,9 +1,10 @@
-# imessage-assistant
-iMessage assistant outputs the people you may have forgotten to respond to (Mac only).
+# MessageMate
+MessageMate is your reliable companion for staying on top of your texts. Life gets busy, and we all forget to respond to people
 
-The program asks for full disk access, which means that it can read the contents of your machine. Don't worry! The program makes **no** network requests. All data is stored locally to maintain privacy. Open sourced so you can check too if you'd like...
+## Details 
+MessageMate asks for full disk access, which means that it can read the contents of your machine. Don't worry! MessageMate makes **no** network requests, which means your data **never** leaves your laptop. **It's completely private.**
 
-The python code is out of date. Load the mac app via Xcode (good luck) or message Shekar to get the packaged mac app (you should do this, xcode is a massive pain).
+You can run MessageMate yourself or purchase it for $4.99 here:
 
-# Suggestions / bugs / contributions
+## Suggestions / bugs / contributions
 email shekar@ramaswamy.org or find me on twitter at [@shekarramaswamy](https://twitter.com/shekarramaswamy)
