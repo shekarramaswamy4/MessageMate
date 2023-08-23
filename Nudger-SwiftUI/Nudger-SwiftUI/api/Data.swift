@@ -24,6 +24,12 @@ class Data {
         do {
             let dbQueue = try DatabaseQueue(path: url!.absoluteString)
             
+            let currentDate = Date()
+            let referenceDate = Calendar.current.date(from: DateComponents(year: 2001, month: 1, day: 1))!
+            let nanosecondsSince2001 = Int(currentDate.timeIntervalSince(referenceDate) * 1_000_000_000)
+            // Defaults to three months ago to look at messages
+            let past = nanosecondsSince2001 - (60 * 60 * 24 * 90 * 1000000000)
+            
             let query = """
 SELECT
     message.date as messageDate,
@@ -35,11 +41,10 @@ FROM
     JOIN chat_message_join ON chat. "ROWID" = chat_message_join.chat_id
     JOIN message ON chat_message_join.message_id = message. "ROWID"
 WHERE
-    service = 'iMessage'
+    service = 'iMessage' and message.date > \(past)
 ORDER BY
-    message_date DESC
+    messageDate DESC
 """
-            let now = Date(timeIntervalSinceNow: 0)
             try dbQueue.read { db in
                 let rows = try Row.fetchCursor(db, sql: query)
                 while let row = try rows.next() {
@@ -64,6 +69,7 @@ ORDER BY
                     let baseDate = Date(timeIntervalSince1970: 978307200)
                     let date = Date(timeInterval: timestamp / 1000000000, since: baseDate)
                                                                                                     
+                    let now = Date(timeIntervalSinceNow: 0)
                     let md = MessageData(timestamp: date.timeIntervalSince1970,
                                          timeDelta: now.timeIntervalSince1970 - date.timeIntervalSince1970, text: text ?? "",
                                          isFromMe: isFromMe)

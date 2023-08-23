@@ -71,9 +71,8 @@ class Suggestion {
             return 0
         }
         
-        // Check if recent burst occurred over a day ago
+        // Check if recent burst occurred over remindWindow hours ago
         // Computed in seconds
-        // remindWindow is in hours
         if rm[0].timeDelta < Double(remindWindow) * 60 * 60 {
             return 0
         }
