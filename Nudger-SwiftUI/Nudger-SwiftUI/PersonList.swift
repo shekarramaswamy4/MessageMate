@@ -51,13 +51,16 @@ struct NoAccessView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 24, content: {
+            // TODO: format this better probably
             Text("""
-Please enable full disk access to use the iMessage Assistant.
+MessageMate keeps you on top of your texts.
+Never forget to respond to one again.
 
+Please allow access to use MessageMate.
 No data ever leaves your Mac.
 """).multilineTextAlignment(TextAlignment.center)
             Button(action: {NSWorkspace.shared.open(url)}) {
-                Link("Enable Access", destination: url).foregroundColor(Color.black)
+                Link("Allow Access", destination: url).foregroundColor(Color.black)
             }.background(Color.blue).cornerRadius(4)
         })
     }
