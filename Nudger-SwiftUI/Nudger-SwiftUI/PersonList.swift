@@ -48,19 +48,38 @@ struct PersonRow: View {
 struct PaymentView: View {
     @ObservedObject var apiM = apiManager
     
+    @State private var codeInput: String = ""
+    
     var body: some View {
         let url = URL(string: apiM.paymentURL)!
         VStack(alignment: .center, spacing: 24, content: {
             Text("""
 Your free trial has expired.
 
-Pay $8 once to use MessageMate forever, with free updates.
-""").multilineTextAlignment(TextAlignment.leading)
+Pay $8 once to use MessageMate forever with free updates.
+""").multilineTextAlignment(TextAlignment.center)
             Button(action: {NSWorkspace.shared.open(url)}) {
                 Link("Pay Now", destination: url).foregroundColor(Color.black)
             }.background(Color.blue).cornerRadius(4)
+            Text("""
+After you've paid, enter the code you received by email here:
+""").multilineTextAlignment(TextAlignment.center)
+            TextField("", text: $codeInput)
+                .frame(width: 200)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(apiM.paymentError ? Color.red : Color.primary)
+                .onAppear {
+                    DispatchQueue.main.async {
+                        NSApp.keyWindow?.makeFirstResponder(nil)
+                    }
+                    // TODO: on change remove the payment error???
+                }
+            Button(action: {
+                apiM.validatePaymentCode(code: codeInput)
+            }) {
+                Text("Enter Code")
+            }
         })
-        // TODO: add a "I have a code box"
     }
 }
 

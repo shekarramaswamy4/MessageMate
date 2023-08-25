@@ -16,6 +16,7 @@ class APIManager: ObservableObject {
     @Published var paymentStatus = "freeTrial"
     @Published var initializeUnixSecond = 0.0
     @Published var paymentURL = ""
+    @Published var paymentError = false
     
     var fullDiskAccessURL: URL!
     
@@ -58,6 +59,7 @@ class APIManager: ObservableObject {
                 self.paymentURL = res.url
             case .failure(let error):
                 // TODO: how to handle error?
+                // Add fallback to prod payment link that we know will work
                 print("Error: \(error)")
             }
         }
@@ -66,15 +68,25 @@ class APIManager: ObservableObject {
     }
     
     func validatePaymentCode(code: String) {
+        if code == "" {
+            DispatchQueue.main.async {
+                self.paymentError = true
+            }
+        }
         let deviceId = defaults.object(forKey: DefaultsConstants.deviceId) as! String
         PaymentAPI.validatePaymentCode(deviceId: deviceId, paymentCode: code) { result in
             switch result {
             case .success(let res):
-                if res.validated {
-                    self.paymentStatus = "paid"
+                DispatchQueue.main.async {
+                    if res.validated {
+                        self.paymentStatus = "paid"
+                    }
+                    self.paymentError = true
                 }
-                // TODO: set some error
             case .failure(let error):
+                DispatchQueue.main.async {
+                    self.paymentError = true
+                }
                 // TODO: how to handle error?
                 print("Error: \(error)")
             }
@@ -108,14 +120,16 @@ class APIManager: ObservableObject {
                 let initializeUnixSecond = defaults.object(forKey: DefaultsConstants.initializeUnixSecond) as? Double ?? 0.0
                 let hasPaid = defaults.object(forKey: DefaultsConstants.hasPaid) as? Bool ?? false
                 
-                if hasPaid {
-                    self.paymentStatus = "paid"
-                } else {
-                    let diff = Date().timeIntervalSince1970 - initializeUnixSecond
-                    if Int(diff) > Constants.freeTrialDuration * 60 * 60 {
-                        self.paymentStatus = "needsPayment"
-                        DispatchQueue.main.async {
-                            statusBarItem.setMenuText(title: "💬 (⚠️)")
+                DispatchQueue.main.async {
+                    if hasPaid {
+                        self.paymentStatus = "paid"
+                    } else {
+                        let diff = Date().timeIntervalSince1970 - initializeUnixSecond
+                        if Int(diff) > Constants.freeTrialDuration * 60 * 60 {
+                            self.paymentStatus = "needsPayment"
+                            DispatchQueue.main.async {
+                                statusBarItem.setMenuText(title: "💬 (⚠️)")
+                            }
                         }
                     }
                 }
