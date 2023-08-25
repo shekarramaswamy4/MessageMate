@@ -55,7 +55,7 @@ struct PaymentView: View {
 Your free trial has expired.
 
 Pay $8 once to use MessageMate forever, with free updates.
-""").multilineTextAlignment(TextAlignment.center)
+""").multilineTextAlignment(TextAlignment.leading)
             Button(action: {NSWorkspace.shared.open(url)}) {
                 Link("Pay Now", destination: url).foregroundColor(Color.black)
             }.background(Color.blue).cornerRadius(4)
@@ -119,11 +119,12 @@ struct FreeTrialView: View {
     }
     
     var body: some View {
-        HStack(alignment: .top, spacing: nil, content: {
-            Text("\(trialLeft) left in free trial").frame(alignment: .leading)
-        })
+        Spacer()
+        VStack(alignment: .center) {
+            Text("\(trialLeft) left in free trial")
+        }
+        Spacer()
     }
-    
 }
 
 struct FooterView: View {
@@ -141,7 +142,6 @@ struct FooterView: View {
     }
     
     var body: some View {
-        // TODO: show a free trial countdown
         HStack(alignment: .top, spacing: nil, content: {
             if showRemindMeAfterPrompt {
                 HStack {
@@ -228,7 +228,7 @@ struct PersonList: View {
                         FooterView(showRemindMeAfterPrompt: true).padding()
                     } else {
                         if apiM.paymentStatus == "freeTrial" {
-                            FreeTrialView().padding()
+                            FreeTrialView().frame(width: 400, height: 10)
                         }
                         List(suggestions) { s in
                             PersonRow(cmh: s)
