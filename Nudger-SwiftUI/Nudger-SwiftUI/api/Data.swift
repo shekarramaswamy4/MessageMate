@@ -87,6 +87,7 @@ ORDER BY
             if error.localizedDescription.contains("authorization denied") {
                 return nil
             }
+            print("read and format chats error")
             print(error)
         }
         
@@ -141,6 +142,7 @@ ORDER BY
                     }
                 }
             } catch {
+                print("read and format contacts, name")
                 print(error)
             }
             
@@ -169,6 +171,7 @@ ORDER BY
                     }
                 }
             } catch {
+                print("read and format contacts, number")
                 print(error)
             }
         }

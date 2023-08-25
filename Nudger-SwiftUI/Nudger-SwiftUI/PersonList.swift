@@ -20,19 +20,18 @@ struct PersonRow: View {
                 .bold()
             Spacer()
             Button(action: {
+                apiManager.dismissSuggestion(cmh: cmh)
+            }) {
+                Text("Dismiss")
+            }
+            Button(action: {
                 let urlStr = "sms:" + String(cmh.phoneNum.filter { !$0.isWhitespace })
                 if let url = URL(string: urlStr) {
                     NSWorkspace.shared.open(url)
                 }
             }) {
                 Text("Open")
-            }
-            Button(action: {
-                apiManager.dismissSuggestion(cmh: cmh)
-            }) {
-                Text("Done")
             }.background(Color.blue)
-                .foregroundColor(Color.white)
                 .cornerRadius(4)
         })
         VStack(alignment: .leading, spacing: nil, content: {
@@ -43,6 +42,25 @@ struct PersonRow: View {
                 })
             }
         })
+    }
+}
+
+struct PaymentView: View {
+    @ObservedObject var apiM = apiManager
+    
+    var body: some View {
+        let url = URL(string: apiM.paymentURL)!
+        VStack(alignment: .center, spacing: 24, content: {
+            Text("""
+Your free trial has expired.
+
+Pay $8 once to use MessageMate forever, with free updates.
+""").multilineTextAlignment(TextAlignment.center)
+            Button(action: {NSWorkspace.shared.open(url)}) {
+                Link("Pay Now", destination: url).foregroundColor(Color.black)
+            }.background(Color.blue).cornerRadius(4)
+        })
+        // TODO: add a "I have a code box"
     }
 }
 
@@ -57,7 +75,7 @@ MessageMate keeps you on top of your texts.
 Never forget to respond to one again.
 
 Please allow access to use MessageMate.
-No data ever leaves your Mac.
+Your data never leaves your Mac.
 """).multilineTextAlignment(TextAlignment.center)
             Button(action: {NSWorkspace.shared.open(url)}) {
                 Link("Allow Access", destination: url).foregroundColor(Color.black)
@@ -90,6 +108,24 @@ This one-time setup should take a few minutes.
     }
 }
 
+struct FreeTrialView: View {
+    @ObservedObject var apiM = apiManager
+    
+    @State private var trialLeft: String = ""
+    
+    init() {
+        let endOfTrial = apiM.initializeUnixSecond + Double(Constants.freeTrialDuration) * 60 * 60
+        _trialLeft = State(initialValue: convertTime(d: endOfTrial - Date().timeIntervalSince1970))
+    }
+    
+    var body: some View {
+        HStack(alignment: .top, spacing: nil, content: {
+            Text("\(trialLeft) left in free trial").frame(alignment: .leading)
+        })
+    }
+    
+}
+
 struct FooterView: View {
     var showRemindMeAfterPrompt: Bool
     
@@ -105,6 +141,7 @@ struct FooterView: View {
     }
     
     var body: some View {
+        // TODO: show a free trial countdown
         HStack(alignment: .top, spacing: nil, content: {
             if showRemindMeAfterPrompt {
                 HStack {
@@ -179,25 +216,34 @@ struct PersonList: View {
         let suggestions = apiManager.suggestionList.data
         
         return VStack(alignment: .center, spacing: nil, content: {
-            if apiM.hasFullDiskAccess {
-                if apiM.firstLoad {
-                    LoadingFirstTimeView()
+            if apiM.paymentStatus == "freeTrial" || apiM.paymentStatus == "paid" {
+                if apiM.hasFullDiskAccess {
+                    if apiM.firstLoad {
+                        LoadingFirstTimeView()
+                            .frame(width: 400, height: 300, alignment: .center)
+                        FooterView(showRemindMeAfterPrompt: false).padding()
+                    } else if suggestions.count == 0 {
+                        NoSuggestionsView()
+                            .frame(width: 400, height: 300, alignment: .center)
+                        FooterView(showRemindMeAfterPrompt: true).padding()
+                    } else {
+                        if apiM.paymentStatus == "freeTrial" {
+                            FreeTrialView().padding()
+                        }
+                        List(suggestions) { s in
+                            PersonRow(cmh: s)
+                            Divider()
+                        }
+                        FooterView(showRemindMeAfterPrompt: true).padding()
+                    }
+                } else {
+                    NoAccessView(url: apiM.fullDiskAccessURL)
                         .frame(width: 400, height: 300, alignment: .center)
                     FooterView(showRemindMeAfterPrompt: false).padding()
-                } else if suggestions.count == 0 {
-                    NoSuggestionsView()
-                        .frame(width: 400, height: 300, alignment: .center)
-                    FooterView(showRemindMeAfterPrompt: true).padding()
-                } else {
-                    List(suggestions) { s in
-                        PersonRow(cmh: s)
-                        Divider()
-                    }
-                    FooterView(showRemindMeAfterPrompt: true).padding()
                 }
             } else {
-                NoAccessView(url: apiM.fullDiskAccessURL)
-                    .frame(width: 400, height: 300, alignment: .center)
+                PaymentView()
+                        .frame(width: 400, height: 300, alignment: .center)
                 FooterView(showRemindMeAfterPrompt: false).padding()
             }
         })

@@ -78,13 +78,8 @@ def get_checkout_url(device_id: str):
     stripe_url = os.getenv("STRIPE_PAYMENT_LINK") + "?client_reference_id=" + device_id
     return {"url": stripe_url}
 
-@app.post("/validate")
-async def post_validate(request: Request):
-    payload = await request.json()
-
-    device_id = payload["device_id"]
-    payment_code = payload["payment_code"]
-
+@app.get("/validate")
+async def get_validate(device_id: str, payment_code: str):
     h = hmac.new(os.getenv("SIGNING_KEY").encode(), device_id.encode(), hashlib.sha256)
     final_code = h.hexdigest()[:10]
     validated = final_code == payment_code

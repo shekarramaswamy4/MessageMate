@@ -26,10 +26,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create the SwiftUI view (i.e. the content).
         
+       
         let contentView = PersonList()
 
         // Create the popover and sets ContentView as the rootView
-        popover.contentSize = NSSize(width: 400, height: 550)
+        popover.contentSize = NSSize(width: 450, height: 550)
         popover.behavior = .transient
         popover.contentViewController = NSHostingController(rootView: contentView)
         
