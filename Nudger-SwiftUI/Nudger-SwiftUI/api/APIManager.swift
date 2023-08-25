@@ -16,6 +16,7 @@ class APIManager: ObservableObject {
     @Published var paymentStatus = "freeTrial"
     @Published var initializeUnixSecond = 0.0
     @Published var paymentURL = ""
+    // TODO: remove the paymentError and move it into the ui
     @Published var paymentError = false
     
     var fullDiskAccessURL: URL!
@@ -80,6 +81,10 @@ class APIManager: ObservableObject {
                 DispatchQueue.main.async {
                     if res.validated {
                         self.paymentStatus = "paid"
+                        defaults.set(true, forKey: DefaultsConstants.hasPaid)
+                        defaults.synchronize()
+                        // Forcing a refresh
+                        self.setRemindWindow(window: self.remindWindow)
                     }
                     self.paymentError = true
                 }
@@ -127,15 +132,14 @@ class APIManager: ObservableObject {
                         let diff = Date().timeIntervalSince1970 - initializeUnixSecond
                         if Int(diff) > Constants.freeTrialDuration * 60 * 60 {
                             self.paymentStatus = "needsPayment"
-                            DispatchQueue.main.async {
-                                statusBarItem.setMenuText(title: "💬 (⚠️)")
-                            }
+                            statusBarItem.setMenuText(title: "💬⚠️")
                         }
                     }
                 }
                 
-                
-                self.perform()
+                if self.paymentStatus != "needsPayment" {
+                    self.perform()
+                }
                 Thread.sleep(forTimeInterval: 5)
             }
         }
@@ -166,7 +170,7 @@ class APIManager: ObservableObject {
     private func setMenuText() {
         DispatchQueue.main.async {
             if self.suggestionList.data.count == 0 {
-                statusBarItem.setMenuText(title: "💬 (0)")
+                statusBarItem.setMenuText(title: "💬✅")
             } else {
                 statusBarItem.setMenuText(title: "💬 (\(self.suggestionList.data.count))")
             }

@@ -6,12 +6,14 @@ from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 import os 
 import stripe 
+import resend
 import hmac
 import hashlib
 
 load_dotenv()
 
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+resend.api_key = os.getenv("RESEND_API_KEY")
 
 app = FastAPI()
 
@@ -54,14 +56,28 @@ async def post_webhook(request: Request):
             email = event["data"]["object"]["customer_details"]["email"]
         except:
             print("Couldn't get email, triggering fall back email")
-            # fallback: send email to myself with details
+            r = resend.Emails.send({
+                "from": "messagemate@messagemate.io",
+                "to": "shekar@ramaswamy.org",
+                "reply_to": "shekar@ramaswamy.org",
+                "subject": "INVALID EMAIL",
+                "html": f"<p>Couldnt get email for purchase. Stripe payload {payload}</p>"
+            })
+            print(r)
             return Response(status_code=200)
         
         try:
             client_reference_id = event["data"]["object"]["client_reference_id"]
         except:
             print("Couldn't get client reference id, triggering fall back email")
-            # fallback: send email to myself with details
+            r = resend.Emails.send({
+                "from": "messagemate@messagemate.io",
+                "to": "shekar@ramaswamy.org",
+                "reply_to": "shekar@ramaswamy.org",
+                "subject": "INVALID CLIENT REFERENCE ID",
+                "html": f"<p>Couldnt get client reference id for {email}. Stripe payload {payload}</p>"
+            })
+            print(r)
             return Response(status_code=200)
 
         h = hmac.new(os.getenv("SIGNING_KEY").encode(), client_reference_id.encode(), hashlib.sha256)
@@ -69,7 +85,14 @@ async def post_webhook(request: Request):
         final_code = code[:10]
 
         print("Payment was successful from " + email + " for device " + client_reference_id + " with code " + final_code)
-        # send email to user with details
+        r = resend.Emails.send({
+            "from": "messagemate@messagemate.io",
+            "to": email,
+            "reply_to": "shekar@ramaswamy.org",
+            "subject": "Your MessageMate Code is " + final_code,
+            "html": f"<p>Thanks for your purchase! Your code is <strong>{final_code}</strong></p>"
+        })
+        print(r)
         
     return Response(status_code=200)
 
