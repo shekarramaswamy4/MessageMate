@@ -285,5 +285,8 @@ func convertTime(d: Double) -> String {
     }
     
     let hours = Int(d / 60 / 60)
+    if hours == 0 {
+        return "<1h"
+    }
     return String(hours) + "h"
 }

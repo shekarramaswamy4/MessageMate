@@ -33,7 +33,7 @@ class APIManager: ObservableObject {
         
         remindWindow = defaults.object(forKey: DefaultsConstants.remindWindow) as? Int ?? Constants.defaultRemindWindow
         
-        // Initialize payment variables
+        // Initialize payment variables for first time setup
         let deviceId = defaults.object(forKey: DefaultsConstants.deviceId) as? String
         if deviceId == nil {
             let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -132,6 +132,7 @@ class APIManager: ObservableObject {
                     self.perform()
                 } else {
                     let diff = Date().timeIntervalSince1970 - initializeUnixSecond
+                    // In seconds
                     if Int(diff) > Constants.freeTrialDuration * 60 * 60 {
                         DispatchQueue.main.async {
                             self.paymentStatus = "needsPayment"
