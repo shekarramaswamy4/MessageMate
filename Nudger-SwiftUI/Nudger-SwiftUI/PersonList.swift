@@ -90,7 +90,6 @@ struct NoAccessView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 24, content: {
-            // TODO: format this better probably
             Text("""
 Please allow file access to use MessageMate.
 

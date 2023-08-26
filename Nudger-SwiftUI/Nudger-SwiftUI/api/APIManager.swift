@@ -58,9 +58,8 @@ class APIManager: ObservableObject {
             case .success(let res):
                 self.paymentURL = res.url
             case .failure(let error):
-                // TODO: how to handle error?
-                // Add fallback to prod payment link that we know will work
-                print("Error: \(error)")
+                // Fallback case
+                self.paymentURL = Constants.stripeProdPaymentLink + "?client_reference_id=" + realDeviceId
             }
         }
         
