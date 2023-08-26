@@ -49,6 +49,7 @@ struct PaymentView: View {
     @ObservedObject var apiM = apiManager
     
     @State private var codeInput: String = ""
+    @State private var inputError: Bool = false
     
     var body: some View {
         let url = URL(string: apiM.paymentURL)!
@@ -56,23 +57,24 @@ struct PaymentView: View {
             Text("""
 Your free trial has expired.
 
-Pay $8 once to use MessageMate forever with free updates.
+Pay $7 once to use MessageMate forever with updates.
 """).multilineTextAlignment(TextAlignment.center)
             Button(action: {NSWorkspace.shared.open(url)}) {
                 Link("Pay Now", destination: url).foregroundColor(Color.black)
             }.background(Color.blue).cornerRadius(4)
             Text("""
-After you've paid, enter the code you received by email here:
+After you pay, enter the code you receive by email here:
 """).multilineTextAlignment(TextAlignment.center)
             TextField("", text: $codeInput)
-                .frame(width: 200)
-                .multilineTextAlignment(.leading)
+                .frame(width: 100)
+                .multilineTextAlignment(.center)
                 .foregroundColor(apiM.paymentError ? Color.red : Color.primary)
                 .onAppear {
                     DispatchQueue.main.async {
                         NSApp.keyWindow?.makeFirstResponder(nil)
                     }
-                    // TODO: on change remove the payment error???
+                }.onChange(of: codeInput) { newValue in
+                    apiM.paymentError = false
                 }
             Button(action: {
                 apiM.validatePaymentCode(code: codeInput)
@@ -90,10 +92,8 @@ struct NoAccessView: View {
         VStack(alignment: .center, spacing: 24, content: {
             // TODO: format this better probably
             Text("""
-MessageMate keeps you on top of your texts.
-Never forget to respond to one again.
+Please allow file access to use MessageMate.
 
-Please allow access to use MessageMate.
 Your data never leaves your Mac.
 """).multilineTextAlignment(TextAlignment.center)
             Button(action: {NSWorkspace.shared.open(url)}) {
@@ -148,6 +148,7 @@ struct FreeTrialView: View {
 
 struct FooterView: View {
     var showRemindMeAfterPrompt: Bool
+    var showSupportEmail: Bool = false
     
     @ObservedObject var apiM = apiManager
     
@@ -155,8 +156,9 @@ struct FooterView: View {
     @State private var canBeDone: Bool = false
     @State private var inputError: Bool = false
 
-    init(showRemindMeAfterPrompt: Bool) {
+    init(showRemindMeAfterPrompt: Bool, showSupportEmail: Bool = false) {
         self.showRemindMeAfterPrompt = showRemindMeAfterPrompt
+        self.showSupportEmail = showSupportEmail
         _remindWindow = State(initialValue: "\(apiM.remindWindow)")
     }
     
@@ -207,6 +209,9 @@ struct FooterView: View {
                     }
                     canBeDone = true
                 }
+            }
+            if showSupportEmail {
+                Text("Email shekar@ramaswamy.org for help")
             }
             
             Spacer()
@@ -263,7 +268,7 @@ struct PersonList: View {
             } else {
                 PaymentView()
                         .frame(width: 400, height: 300, alignment: .center)
-                FooterView(showRemindMeAfterPrompt: false).padding()
+                FooterView(showRemindMeAfterPrompt: false, showSupportEmail: true).padding()
             }
         })
     }

@@ -9,6 +9,7 @@ import stripe
 import resend
 import hmac
 import hashlib
+import re
 
 load_dotenv()
 
@@ -80,10 +81,8 @@ async def post_webhook(request: Request):
             print(r)
             return Response(status_code=200)
 
-        h = hmac.new(os.getenv("SIGNING_KEY").encode(), client_reference_id.encode(), hashlib.sha256)
-        code = h.hexdigest()
-        final_code = code[:10]
-
+        final_code = generate_code(client_reference_id)
+        
         print("Payment was successful from " + email + " for device " + client_reference_id + " with code " + final_code)
         r = resend.Emails.send({
             "from": "messagemate@messagemate.io",
@@ -104,7 +103,16 @@ def get_checkout_url(device_id: str):
 @app.get("/validate")
 async def get_validate(device_id: str, payment_code: str):
     h = hmac.new(os.getenv("SIGNING_KEY").encode(), device_id.encode(), hashlib.sha256)
-    final_code = h.hexdigest()[:10]
+    final_code = generate_code(device_id)
     validated = final_code == payment_code
 
     return {"validated": validated}
+
+def generate_code(device_id: str):
+    h = hmac.new(os.getenv("SIGNING_KEY").encode(), device_id.encode(), hashlib.sha256)
+    numbers = re.findall(r'\d', h.hexdigest())  
+    numbers_str = ''.join(numbers)[:6].ljust(6, '0')  
+    formatted_str = f"{numbers_str[:3]}-{numbers_str[3:]}"  
+    return formatted_str
+
+

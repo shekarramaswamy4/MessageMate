@@ -16,7 +16,6 @@ class APIManager: ObservableObject {
     @Published var paymentStatus = "freeTrial"
     @Published var initializeUnixSecond = 0.0
     @Published var paymentURL = ""
-    // TODO: remove the paymentError and move it into the ui
     @Published var paymentError = false
     
     var fullDiskAccessURL: URL!
@@ -69,10 +68,11 @@ class APIManager: ObservableObject {
     }
     
     func validatePaymentCode(code: String) {
-        if code == "" {
+        if code.count != 7 {
             DispatchQueue.main.async {
                 self.paymentError = true
             }
+            return
         }
         let deviceId = defaults.object(forKey: DefaultsConstants.deviceId) as! String
         PaymentAPI.validatePaymentCode(deviceId: deviceId, paymentCode: code) { result in
