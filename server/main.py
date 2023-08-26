@@ -29,6 +29,11 @@ app.add_middleware(
 
 @app.post("/webhook")
 async def post_webhook(request: Request):
+    body = await request.body()  
+  
+    if not body:  
+        return HTTPException(status_code=400)
+
     payload = await request.json()
     print(request.headers)
     print(payload)
@@ -40,7 +45,6 @@ async def post_webhook(request: Request):
     event = None
 
     try:
-        body = await request.body()
         event = stripe.Webhook.construct_event(
             body, sig_header, os.getenv("STRIPE_WEBHOOK_SECRET")
         )

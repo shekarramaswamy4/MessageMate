@@ -124,21 +124,25 @@ class APIManager: ObservableObject {
                 let initializeUnixSecond = defaults.object(forKey: DefaultsConstants.initializeUnixSecond) as? Double ?? 0.0
                 let hasPaid = defaults.object(forKey: DefaultsConstants.hasPaid) as? Bool ?? false
                 
-                DispatchQueue.main.async {
-                    if hasPaid {
+                if hasPaid {
+                    // If paid, perform
+                    DispatchQueue.main.async {
                         self.paymentStatus = "paid"
-                    } else {
-                        let diff = Date().timeIntervalSince1970 - initializeUnixSecond
-                        if Int(diff) > Constants.freeTrialDuration * 60 * 60 {
+                    }
+                    self.perform()
+                } else {
+                    let diff = Date().timeIntervalSince1970 - initializeUnixSecond
+                    if Int(diff) > Constants.freeTrialDuration * 60 * 60 {
+                        DispatchQueue.main.async {
                             self.paymentStatus = "needsPayment"
                             statusBarItem.setMenuText(title: "💬⚠️")
                         }
+                    } else {
+                        // Still on free trial
+                        self.perform()
                     }
                 }
                 
-                if self.paymentStatus != "needsPayment" {
-                    self.perform()
-                }
                 Thread.sleep(forTimeInterval: 5)
             }
         }
