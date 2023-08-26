@@ -92,7 +92,7 @@ async def post_webhook(request: Request):
             "from": "messagemate@messagemate.io",
             "to": email,
             "reply_to": "shekar@ramaswamy.org",
-            "subject": "Your MessageMate Code is " + final_code,
+            "subject": "Your MessageMate code is " + final_code,
             "html": f"<p>Thanks for your purchase! Your code is <strong>{final_code}</strong></p>"
         })
         print(r)
