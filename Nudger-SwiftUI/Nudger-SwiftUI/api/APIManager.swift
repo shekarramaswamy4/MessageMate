@@ -13,6 +13,11 @@ class APIManager: ObservableObject {
     @Published var firstLoad = true
     @Published var remindWindow = Constants.defaultRemindWindow
     
+    @Published var paymentStatus = "freeTrial"
+    @Published var initializeUnixSecond = 0.0
+    @Published var paymentURL = ""
+    @Published var paymentError = false
+    
     var fullDiskAccessURL: URL!
     
     var isProcessing = false
@@ -28,7 +33,69 @@ class APIManager: ObservableObject {
         
         remindWindow = defaults.object(forKey: DefaultsConstants.remindWindow) as? Int ?? Constants.defaultRemindWindow
         
+        // Initialize payment variables
+        let deviceId = defaults.object(forKey: DefaultsConstants.deviceId) as? String
+        if deviceId == nil {
+            let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            let randomString = (0..<10).map { _ in
+                letters.randomElement()!
+            }
+            defaults.set(String(randomString), forKey: DefaultsConstants.deviceId)
+            
+            let currentDate = Date()
+            let unixTimestamp = currentDate.timeIntervalSince1970
+            defaults.set(unixTimestamp, forKey: DefaultsConstants.initializeUnixSecond)
+            defaults.set(false, forKey: DefaultsConstants.hasPaid)
+            
+            defaults.synchronize()
+        }
+        let storedInitUnixSecond = defaults.object(forKey: DefaultsConstants.initializeUnixSecond) as! Double
+        self.initializeUnixSecond = storedInitUnixSecond
+        
+        let realDeviceId = defaults.object(forKey: DefaultsConstants.deviceId) as! String
+        PaymentAPI.getPaymentURL(deviceId: realDeviceId) { result in
+            switch result {
+            case .success(let res):
+                self.paymentURL = res.url
+            case .failure(let error):
+                // TODO: how to handle error?
+                // Add fallback to prod payment link that we know will work
+                print("Error: \(error)")
+            }
+        }
+        
         startPerforming()
+    }
+    
+    func validatePaymentCode(code: String) {
+        if code.count != 7 {
+            DispatchQueue.main.async {
+                self.paymentError = true
+            }
+            return
+        }
+        let deviceId = defaults.object(forKey: DefaultsConstants.deviceId) as! String
+        PaymentAPI.validatePaymentCode(deviceId: deviceId, paymentCode: code) { result in
+            switch result {
+            case .success(let res):
+                DispatchQueue.main.async {
+                    if res.validated {
+                        self.paymentStatus = "paid"
+                        defaults.set(true, forKey: DefaultsConstants.hasPaid)
+                        defaults.synchronize()
+                        // Forcing a refresh
+                        self.setRemindWindow(window: self.remindWindow)
+                    }
+                    self.paymentError = true
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.paymentError = true
+                }
+                // TODO: how to handle error?
+                print("Error: \(error)")
+            }
+        }
     }
     
     func setRemindWindow(window: Int) {
@@ -54,7 +121,25 @@ class APIManager: ObservableObject {
     private func startPerforming() {
         DispatchQueue.global().async {
             while true {
-                self.perform()
+                // Check payments
+                let initializeUnixSecond = defaults.object(forKey: DefaultsConstants.initializeUnixSecond) as? Double ?? 0.0
+                let hasPaid = defaults.object(forKey: DefaultsConstants.hasPaid) as? Bool ?? false
+                
+                DispatchQueue.main.async {
+                    if hasPaid {
+                        self.paymentStatus = "paid"
+                    } else {
+                        let diff = Date().timeIntervalSince1970 - initializeUnixSecond
+                        if Int(diff) > Constants.freeTrialDuration * 60 * 60 {
+                            self.paymentStatus = "needsPayment"
+                            statusBarItem.setMenuText(title: "💬⚠️")
+                        }
+                    }
+                }
+                
+                if self.paymentStatus != "needsPayment" {
+                    self.perform()
+                }
                 Thread.sleep(forTimeInterval: 5)
             }
         }
@@ -85,7 +170,7 @@ class APIManager: ObservableObject {
     private func setMenuText() {
         DispatchQueue.main.async {
             if self.suggestionList.data.count == 0 {
-                statusBarItem.setMenuText(title: "💬 (0)")
+                statusBarItem.setMenuText(title: "💬✅")
             } else {
                 statusBarItem.setMenuText(title: "💬 (\(self.suggestionList.data.count))")
             }
@@ -101,7 +186,7 @@ class APIManager: ObservableObject {
         
         DispatchQueue.global().async {
             let data = dataAPI.getData()
-
+            
             DispatchQueue.main.async {
                 self.firstLoad = false
                 

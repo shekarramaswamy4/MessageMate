@@ -11,8 +11,17 @@ import Foundation
 struct DefaultsConstants {
     static let dismissedDict = "dismissedDict"
     static let remindWindow = "remindWindow"
+    static let deviceId = "deviceId"
+    static let paymentStatus = "paymentStatus"
+    static let initializeUnixSecond = "initializeUnixSecond"
+    static let hasPaid = "hasPaid"
 }
 
 struct Constants {
+    // Hours
     static let defaultRemindWindow = 12
+    // Hours
+    static let freeTrialDuration = 24 * 7
+    
+    static let apiUrl = "http://localhost:8000"
 }
