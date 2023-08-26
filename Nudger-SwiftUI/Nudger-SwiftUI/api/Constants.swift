@@ -23,7 +23,7 @@ struct Constants {
     // Hours
     static let freeTrialDuration = 24 * 7
     
-    static let apiUrl = "http://localhost:8000"
+    static let apiUrl = "https://api.messagemate.io"
     
     static let stripeProdPaymentLink = "https://buy.stripe.com/dR6bMec4f8vvbU4cMM"
 }
