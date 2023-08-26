@@ -45,9 +45,22 @@ h3.subtitle {
 
 .ctas {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin: 24px 0;
   animation-delay: 600ms;
+  flex-direction: row;
+  gap: 6px;
+}
+
+.try-column {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.notice {
+  font-size: 0.8em;
+  color: #2e7d32aa;
 }
 
 .cta {
@@ -60,12 +73,14 @@ h3.subtitle {
   cursor: pointer;
   font-size: 1em;
   transition: background-color 100ms ease;
+  box-sizing: border-box;
 }
 
 button.cta.primary {
   border: none;
   color: white;
   background: #2e7d32;
+  border: 2px solid #2e7d32;
   box-shadow: 0 0 1px 0px #1b5e20b0;
 }
 
