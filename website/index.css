@@ -91,7 +91,7 @@ h3.subtitle {
   width: 120px;
   margin: 4px 12px;
   cursor: pointer;
-  font-size: 1em;
+  font-size: 1.2em;
   transition: background-color 100ms ease, border-color 100ms ease;
   box-sizing: border-box;
 }
@@ -138,5 +138,21 @@ button.cta.primary {
   to {
     opacity: 1;
     translate: 0;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .title {
+    text-align: center;
+    font-size: 2.7em;
+  }
+
+  .content {
+    padding: 24px;
+  }
+
+  h3.subtitle {
+    width: 100%;
+    font-size: 1.2em;
   }
 }
