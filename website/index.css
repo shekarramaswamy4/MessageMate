@@ -43,6 +43,12 @@ h3.subtitle {
   animation: appear 150ms ease forwards;
 }
 
+.subtitle {
+  max-width: max(450px, 60vw);
+  text-align: center;
+  line-height: 1.5em;
+}
+
 .ctas {
   display: flex;
   align-items: flex-start;
