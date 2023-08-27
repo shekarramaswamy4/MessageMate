@@ -22,9 +22,10 @@ body {
   padding: 12px;
 }
 
-video {
+.panel video {
   width: 90%;
   border-radius: 4px;
+  animation-delay: 450ms;
 }
 
 .title {
@@ -49,7 +50,8 @@ h3.subtitle {
 
 .title,
 .subtitle,
-.ctas {
+.ctas,
+video {
   opacity: 0;
   translate: 0 -10px;
   animation: appear 150ms ease forwards;
