@@ -40,7 +40,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusBarItem.setMenuText(title: "💬 (🔄)")
         
         hotKey.keyDownHandler = {
-            self.togglePopover(nil)
+            
+            DispatchQueue.main.async {
+                apiManager.suggestionList = ContactMessageHistoryList(data: [])
+                statusBarItem.setMenuText(title: "💬✅")
+            }
+
+            // self.togglePopover(nil)
         }
         
         eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in

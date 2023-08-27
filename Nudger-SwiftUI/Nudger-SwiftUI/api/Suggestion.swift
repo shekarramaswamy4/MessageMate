@@ -38,7 +38,15 @@ class Suggestion {
         
         defaults.set(dismissed, forKey: DefaultsConstants.dismissedDict)
         defaults.synchronize()
-        return suggestions
+        
+        let c1 = ContactMessageHistory(phoneNum: "+14088585444", name: "Shekar Ramaswamy", messageData: [
+            MessageData(timestamp: 0, timeDelta: 60 * 60 * 26, text: "Hey! Want to get brunch this weekend? im staying in soho with my buddy john from high school", isFromMe: false)])
+        let c2 = ContactMessageHistory(phoneNum: "+16462705561", name: "Cece Vogler", messageData: [
+            MessageData(timestamp: 0, timeDelta: 60 * 60 * 14, text: "okk text me when you arrive 🛩", isFromMe: false)])
+        let c3 = ContactMessageHistory(phoneNum: "+14089929103", name: "James Rogers", messageData: [
+            MessageData(timestamp: 0, timeDelta: 60 * 60 * 22, text: "it was great to chat! thanks for your time, talk soon", isFromMe: false)])
+
+        return [c2, c3, c1]
     }
     
     // Both this and that are required to have at least one message in MessageData
