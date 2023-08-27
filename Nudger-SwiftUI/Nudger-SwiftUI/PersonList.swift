@@ -17,7 +17,7 @@ struct PersonRow: View {
         
         HStack(alignment: .top, spacing: nil, content: {
             Text("\(cmh.name)")
-                .bold()
+                .bold().foregroundColor(textColor())
             Spacer()
             Button(action: {
                 apiManager.dismissSuggestion(cmh: cmh)
@@ -37,8 +37,7 @@ struct PersonRow: View {
         VStack(alignment: .leading, spacing: nil, content: {
             ForEach(recents, id: \.self) {
                 md in HStack(alignment: .top, spacing: nil, content: {
-                    Text(convertTime(d: md.timeDelta)).foregroundColor(isDark() ? Color.white : Color.black)
-                    Text(md.text).foregroundColor(isDark() ? Color.white : Color.black)
+                    Text(convertTime(d: md.timeDelta) + "  " + md.text).foregroundColor(textColor())
                 })
             }
         })
@@ -58,13 +57,13 @@ struct PaymentView: View {
 Your free trial has expired.
 
 Pay $7 once to use MessageMate forever with updates.
-""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(textColor())
             Button(action: {NSWorkspace.shared.open(url)}) {
                 Link("Pay Now", destination: url).foregroundColor(isDark() ? Color.black : Color.white)
             }.background(Color.blue).cornerRadius(4)
             Text("""
 After you pay, enter the code you receive by email here:
-""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(textColor())
             TextField("", text: $codeInput)
                 .frame(width: 100)
                 .multilineTextAlignment(.center)
@@ -96,7 +95,7 @@ MessageMate reminds you if you've forgotten to respond to an iMessage.
 Your data never leaves your Mac.
 
 Please allow file access to use MessageMate.
-""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(textColor())
             Button(action: {NSWorkspace.shared.open(url)}) {
                 Link("Allow Access", destination: url).foregroundColor(isDark() ? Color.black : Color.white)
             }.background(Color.blue).cornerRadius(4)
@@ -111,7 +110,7 @@ struct NoSuggestionsView: View {
 No reminders!
 
 Enjoy the peace of mind. 😌
-""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(textColor())
         })
     }
 }
@@ -123,7 +122,7 @@ struct LoadingFirstTimeView: View {
 Loading your reminders!
 
 This should only take a few minutes.
-""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(textColor())
         })
     }
 }
@@ -141,7 +140,7 @@ struct FreeTrialView: View {
     var body: some View {
         Spacer()
         VStack(alignment: .center) {
-            Text("\(trialLeft) left in free trial").foregroundColor(isDark() ? Color.white : Color.black)
+            Text("\(trialLeft) left in free trial").foregroundColor(textColor())
         }
         Spacer()
     }
@@ -167,7 +166,7 @@ struct FooterView: View {
         HStack(alignment: .top, spacing: nil, content: {
             if showRemindMeAfterPrompt {
                 HStack {
-                    Text("Remind me after").foregroundColor(isDark() ? Color.white : Color.black)
+                    Text("Remind me after").foregroundColor(textColor())
                     
                     TextField("", text: $remindWindow)
                         .frame(width: 40)
@@ -179,7 +178,7 @@ struct FooterView: View {
                             }
                         }
                     
-                    Text("h").foregroundColor(isDark() ? Color.white : Color.black)
+                    Text("h").foregroundColor(textColor())
                     
                     if canBeDone {
                         Button(action: {
@@ -212,7 +211,7 @@ struct FooterView: View {
                 }
             }
             if showSupportEmail {
-                Text("Email shekar@ramaswamy.org for help").foregroundColor(isDark() ? Color.white : Color.black)
+                Text("Email shekar@ramaswamy.org for help").foregroundColor(textColor())
             }
             
             Spacer()
@@ -295,4 +294,8 @@ func convertTime(d: Double) -> String {
 
 func isDark() -> Bool {
     return NSApp.effectiveAppearance.name == NSAppearance.Name.darkAqua
+}
+
+func textColor() -> SwiftUI.Color {
+    return isDark() ? Color.white : Color.black
 }
