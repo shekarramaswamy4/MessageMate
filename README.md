@@ -2,6 +2,8 @@
 
 MessageMate reminds you if you&apos;ve forgotten to respond to an iMessage. Your data never leaves your Mac.
 
+<img width="535" alt="screenshot" src="https://github.com/shekarramaswamy4/MessageMate/assets/31163793/f7611d2a-67bb-4e74-8313-73f48f7b8be2">
+
 ## Details
 
 MessageMate asks for full disk access, which means that it can read the contents of your machine. Don't worry! MessageMate only makes network requests to handle payments, which means your data **never** leaves your laptop. **It's completely private.**
