@@ -37,8 +37,8 @@ struct PersonRow: View {
         VStack(alignment: .leading, spacing: nil, content: {
             ForEach(recents, id: \.self) {
                 md in HStack(alignment: .top, spacing: nil, content: {
-                    Text(convertTime(d: md.timeDelta))
-                    Text(md.text).foregroundColor(Color.black)
+                    Text(convertTime(d: md.timeDelta)).foregroundColor(isDark() ? Color.white : Color.black)
+                    Text(md.text).foregroundColor(isDark() ? Color.white : Color.black)
                 })
             }
         })
@@ -58,13 +58,13 @@ struct PaymentView: View {
 Your free trial has expired.
 
 Pay $7 once to use MessageMate forever with updates.
-""").multilineTextAlignment(TextAlignment.center)
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
             Button(action: {NSWorkspace.shared.open(url)}) {
                 Link("Pay Now", destination: url).foregroundColor(isDark() ? Color.black : Color.white)
             }.background(Color.blue).cornerRadius(4)
             Text("""
 After you pay, enter the code you receive by email here:
-""").multilineTextAlignment(TextAlignment.center)
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
             TextField("", text: $codeInput)
                 .frame(width: 100)
                 .multilineTextAlignment(.center)
@@ -96,7 +96,7 @@ MessageMate reminds you if you've forgotten to respond to an iMessage.
 Your data never leaves your Mac.
 
 Please allow file access to use MessageMate.
-""").multilineTextAlignment(TextAlignment.center)
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
             Button(action: {NSWorkspace.shared.open(url)}) {
                 Link("Allow Access", destination: url).foregroundColor(isDark() ? Color.black : Color.white)
             }.background(Color.blue).cornerRadius(4)
@@ -111,7 +111,7 @@ struct NoSuggestionsView: View {
 No reminders!
 
 Enjoy the peace of mind. 😌
-""").multilineTextAlignment(TextAlignment.center)
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
         })
     }
 }
@@ -122,8 +122,8 @@ struct LoadingFirstTimeView: View {
             Text("""
 Loading your reminders!
 
-This one-time setup should take a few minutes.
-""").multilineTextAlignment(TextAlignment.center)
+This should only take a few minutes.
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
         })
     }
 }
@@ -141,7 +141,7 @@ struct FreeTrialView: View {
     var body: some View {
         Spacer()
         VStack(alignment: .center) {
-            Text("\(trialLeft) left in free trial")
+            Text("\(trialLeft) left in free trial").foregroundColor(isDark() ? Color.white : Color.black)
         }
         Spacer()
     }
@@ -167,7 +167,7 @@ struct FooterView: View {
         HStack(alignment: .top, spacing: nil, content: {
             if showRemindMeAfterPrompt {
                 HStack {
-                    Text("Remind me after")
+                    Text("Remind me after").foregroundColor(isDark() ? Color.white : Color.black)
                     
                     TextField("", text: $remindWindow)
                         .frame(width: 40)
@@ -179,14 +179,14 @@ struct FooterView: View {
                             }
                         }
                     
-                    Text("h")
+                    Text("h").foregroundColor(isDark() ? Color.white : Color.black)
                     
                     if canBeDone {
                         Button(action: {
                             // Perform action when done button is tapped
                             // For example: schedule reminder with remindHours value
                             canBeDone = false
-                            apiM.setRemindWindow(window: Int(remindWindow) ?? Constants.defaultRemindWindow)
+                            apiM.setRemindWindow(window: Int(remindWindow) ?? Constants.defaultRemindWindow, shouldClose: false)
                         }) {
                             Text("Done")
                         }
@@ -212,7 +212,7 @@ struct FooterView: View {
                 }
             }
             if showSupportEmail {
-                Text("Email shekar@ramaswamy.org for help")
+                Text("Email shekar@ramaswamy.org for help").foregroundColor(isDark() ? Color.white : Color.black)
             }
             
             Spacer()
