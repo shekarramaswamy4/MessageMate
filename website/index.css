@@ -33,6 +33,7 @@ body {
   margin: 8px;
   font-size: 3.5em;
   animation-delay: 225ms;
+  text-align: center;
 }
 
 .normal {
