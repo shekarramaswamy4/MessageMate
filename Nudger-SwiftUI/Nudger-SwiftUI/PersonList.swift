@@ -30,15 +30,15 @@ struct PersonRow: View {
                     NSWorkspace.shared.open(url)
                 }
             }) {
-                Text("Open")
+                Text("Open").foregroundColor(isDark() ? Color.black : Color.white)
             }.background(Color.blue)
-                .cornerRadius(4)
+             .cornerRadius(4)
         })
         VStack(alignment: .leading, spacing: nil, content: {
             ForEach(recents, id: \.self) {
                 md in HStack(alignment: .top, spacing: nil, content: {
                     Text(convertTime(d: md.timeDelta))
-                    Text(md.text)
+                    Text(md.text).foregroundColor(Color.black)
                 })
             }
         })
@@ -60,7 +60,7 @@ Your free trial has expired.
 Pay $7 once to use MessageMate forever with updates.
 """).multilineTextAlignment(TextAlignment.center)
             Button(action: {NSWorkspace.shared.open(url)}) {
-                Link("Pay Now", destination: url).foregroundColor(Color.black)
+                Link("Pay Now", destination: url).foregroundColor(isDark() ? Color.black : Color.white)
             }.background(Color.blue).cornerRadius(4)
             Text("""
 After you pay, enter the code you receive by email here:
@@ -91,12 +91,14 @@ struct NoAccessView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 24, content: {
             Text("""
-Please allow file access to use MessageMate.
+MessageMate reminds you if you've forgotten to respond to an iMessage.
 
 Your data never leaves your Mac.
+
+Please allow file access to use MessageMate.
 """).multilineTextAlignment(TextAlignment.center)
             Button(action: {NSWorkspace.shared.open(url)}) {
-                Link("Allow Access", destination: url).foregroundColor(Color.black)
+                Link("Allow Access", destination: url).foregroundColor(isDark() ? Color.black : Color.white)
             }.background(Color.blue).cornerRadius(4)
         })
     }
@@ -289,4 +291,8 @@ func convertTime(d: Double) -> String {
         return "<1h"
     }
     return String(hours) + "h"
+}
+
+func isDark() -> Bool {
+    return NSApp.effectiveAppearance.name == NSAppearance.Name.darkAqua
 }

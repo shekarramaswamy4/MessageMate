@@ -53,13 +53,18 @@ class APIManager: ObservableObject {
         self.initializeUnixSecond = storedInitUnixSecond
         
         let realDeviceId = defaults.object(forKey: DefaultsConstants.deviceId) as! String
+        self.paymentURL = Constants.stripeProdPaymentLink + "?client_reference_id=" + realDeviceId
+
         PaymentAPI.getPaymentURL(deviceId: realDeviceId) { result in
             switch result {
             case .success(let res):
-                self.paymentURL = res.url
+                DispatchQueue.main.async {
+                    self.paymentURL = res.url
+                }
             case .failure(let error):
                 // Fallback case
                 self.paymentURL = Constants.stripeProdPaymentLink + "?client_reference_id=" + realDeviceId
+                print(error)
             }
         }
         

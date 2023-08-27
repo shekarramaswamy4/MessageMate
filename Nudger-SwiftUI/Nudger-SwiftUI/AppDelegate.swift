@@ -51,6 +51,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
         eventMonitor?.start()
+        
+        togglePopover(nil)
     }
     
     // Toggles popover
