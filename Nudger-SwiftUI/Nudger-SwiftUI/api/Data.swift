@@ -27,8 +27,8 @@ class Data {
             let currentDate = Date()
             let referenceDate = Calendar.current.date(from: DateComponents(year: 2001, month: 1, day: 1))!
             let nanosecondsSince2001 = Int(currentDate.timeIntervalSince(referenceDate) * 1_000_000_000)
-            // Defaults to three months ago to look at messages
-            let past = nanosecondsSince2001 - (60 * 60 * 24 * 90 * 1000000000)
+            // Defaults to 1.5 month ago to look at messages
+            let past = nanosecondsSince2001 - (60 * 60 * 24 * 45 * 1000000000)
             
             let query = """
 SELECT
@@ -87,6 +87,7 @@ ORDER BY
             if error.localizedDescription.contains("authorization denied") {
                 return nil
             }
+            print("read and format chats error")
             print(error)
         }
         
@@ -141,6 +142,7 @@ ORDER BY
                     }
                 }
             } catch {
+                print("read and format contacts, name")
                 print(error)
             }
             
@@ -169,6 +171,7 @@ ORDER BY
                     }
                 }
             } catch {
+                print("read and format contacts, number")
                 print(error)
             }
         }

@@ -78,7 +78,7 @@ h3.subtitle {
 
 .notice {
   font-size: 0.8em;
-  color: #3199eeaa;
+  color: #478df7;
 }
 
 .link {
@@ -99,7 +99,7 @@ h3.subtitle {
   font-weight: 300;
   border-radius: 4px;
   width: 120px;
-  margin: 4px 12px;
+  margin: 8px 12px;
   cursor: pointer;
   font-size: 1.2em;
   transition: background-color 100ms ease, border-color 100ms ease;
@@ -109,7 +109,7 @@ h3.subtitle {
 button.cta.primary {
   border: none;
   color: white;
-  --color: #3199ee;
+  --color: #478df7;
   background: var(--color);
   border: 2px solid var(--color);
   box-shadow: 0 0 1px 0px #3f6d93;

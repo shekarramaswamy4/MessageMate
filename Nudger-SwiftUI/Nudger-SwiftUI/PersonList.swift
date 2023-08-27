@@ -20,27 +20,66 @@ struct PersonRow: View {
                 .bold()
             Spacer()
             Button(action: {
+                apiManager.dismissSuggestion(cmh: cmh)
+            }) {
+                Text("Dismiss")
+            }
+            Button(action: {
                 let urlStr = "sms:" + String(cmh.phoneNum.filter { !$0.isWhitespace })
                 if let url = URL(string: urlStr) {
                     NSWorkspace.shared.open(url)
                 }
             }) {
-                Text("Open")
-            }
-            Button(action: {
-                apiManager.dismissSuggestion(cmh: cmh)
-            }) {
-                Text("Done")
+                Text("Open").foregroundColor(isDark() ? Color.black : Color.white)
             }.background(Color.blue)
-                .foregroundColor(Color.white)
-                .cornerRadius(4)
+             .cornerRadius(4)
         })
         VStack(alignment: .leading, spacing: nil, content: {
             ForEach(recents, id: \.self) {
                 md in HStack(alignment: .top, spacing: nil, content: {
-                    Text(convertTime(d: md.timeDelta))
-                    Text(md.text)
+                    Text(convertTime(d: md.timeDelta)).foregroundColor(isDark() ? Color.white : Color.black)
+                    Text(md.text).foregroundColor(isDark() ? Color.white : Color.black)
                 })
+            }
+        })
+    }
+}
+
+struct PaymentView: View {
+    @ObservedObject var apiM = apiManager
+    
+    @State private var codeInput: String = ""
+    @State private var inputError: Bool = false
+    
+    var body: some View {
+        let url = URL(string: apiM.paymentURL)!
+        VStack(alignment: .center, spacing: 24, content: {
+            Text("""
+Your free trial has expired.
+
+Pay $7 once to use MessageMate forever with updates.
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
+            Button(action: {NSWorkspace.shared.open(url)}) {
+                Link("Pay Now", destination: url).foregroundColor(isDark() ? Color.black : Color.white)
+            }.background(Color.blue).cornerRadius(4)
+            Text("""
+After you pay, enter the code you receive by email here:
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
+            TextField("", text: $codeInput)
+                .frame(width: 100)
+                .multilineTextAlignment(.center)
+                .foregroundColor(apiM.paymentError ? Color.red : Color.primary)
+                .onAppear {
+                    DispatchQueue.main.async {
+                        NSApp.keyWindow?.makeFirstResponder(nil)
+                    }
+                }.onChange(of: codeInput) { newValue in
+                    apiM.paymentError = false
+                }
+            Button(action: {
+                apiM.validatePaymentCode(code: codeInput)
+            }) {
+                Text("Enter Code")
             }
         })
     }
@@ -51,16 +90,15 @@ struct NoAccessView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 24, content: {
-            // TODO: format this better probably
             Text("""
-MessageMate keeps you on top of your texts.
-Never forget to respond to one again.
+MessageMate reminds you if you've forgotten to respond to an iMessage.
 
-Please allow access to use MessageMate.
-No data ever leaves your Mac.
-""").multilineTextAlignment(TextAlignment.center)
+Your data never leaves your Mac.
+
+Please allow file access to use MessageMate.
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
             Button(action: {NSWorkspace.shared.open(url)}) {
-                Link("Allow Access", destination: url).foregroundColor(Color.black)
+                Link("Allow Access", destination: url).foregroundColor(isDark() ? Color.black : Color.white)
             }.background(Color.blue).cornerRadius(4)
         })
     }
@@ -73,7 +111,7 @@ struct NoSuggestionsView: View {
 No reminders!
 
 Enjoy the peace of mind. 😌
-""").multilineTextAlignment(TextAlignment.center)
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
         })
     }
 }
@@ -84,14 +122,34 @@ struct LoadingFirstTimeView: View {
             Text("""
 Loading your reminders!
 
-This one-time setup should take a few minutes.
-""").multilineTextAlignment(TextAlignment.center)
+This should only take a few minutes.
+""").multilineTextAlignment(TextAlignment.center).foregroundColor(isDark() ? Color.white : Color.black)
         })
+    }
+}
+
+struct FreeTrialView: View {
+    @ObservedObject var apiM = apiManager
+    
+    @State private var trialLeft: String = ""
+    
+    init() {
+        let endOfTrial = apiM.initializeUnixSecond + Double(Constants.freeTrialDuration) * 60 * 60
+        _trialLeft = State(initialValue: convertTime(d: endOfTrial - Date().timeIntervalSince1970))
+    }
+    
+    var body: some View {
+        Spacer()
+        VStack(alignment: .center) {
+            Text("\(trialLeft) left in free trial").foregroundColor(isDark() ? Color.white : Color.black)
+        }
+        Spacer()
     }
 }
 
 struct FooterView: View {
     var showRemindMeAfterPrompt: Bool
+    var showSupportEmail: Bool = false
     
     @ObservedObject var apiM = apiManager
     
@@ -99,8 +157,9 @@ struct FooterView: View {
     @State private var canBeDone: Bool = false
     @State private var inputError: Bool = false
 
-    init(showRemindMeAfterPrompt: Bool) {
+    init(showRemindMeAfterPrompt: Bool, showSupportEmail: Bool = false) {
         self.showRemindMeAfterPrompt = showRemindMeAfterPrompt
+        self.showSupportEmail = showSupportEmail
         _remindWindow = State(initialValue: "\(apiM.remindWindow)")
     }
     
@@ -108,7 +167,7 @@ struct FooterView: View {
         HStack(alignment: .top, spacing: nil, content: {
             if showRemindMeAfterPrompt {
                 HStack {
-                    Text("Remind me after")
+                    Text("Remind me after").foregroundColor(isDark() ? Color.white : Color.black)
                     
                     TextField("", text: $remindWindow)
                         .frame(width: 40)
@@ -120,14 +179,14 @@ struct FooterView: View {
                             }
                         }
                     
-                    Text("h")
+                    Text("h").foregroundColor(isDark() ? Color.white : Color.black)
                     
                     if canBeDone {
                         Button(action: {
                             // Perform action when done button is tapped
                             // For example: schedule reminder with remindHours value
                             canBeDone = false
-                            apiM.setRemindWindow(window: Int(remindWindow) ?? Constants.defaultRemindWindow)
+                            apiM.setRemindWindow(window: Int(remindWindow) ?? Constants.defaultRemindWindow, shouldClose: false)
                         }) {
                             Text("Done")
                         }
@@ -151,6 +210,9 @@ struct FooterView: View {
                     }
                     canBeDone = true
                 }
+            }
+            if showSupportEmail {
+                Text("Email shekar@ramaswamy.org for help").foregroundColor(isDark() ? Color.white : Color.black)
             }
             
             Spacer()
@@ -179,26 +241,35 @@ struct PersonList: View {
         let suggestions = apiManager.suggestionList.data
         
         return VStack(alignment: .center, spacing: nil, content: {
-            if apiM.hasFullDiskAccess {
-                if apiM.firstLoad {
-                    LoadingFirstTimeView()
+            if apiM.paymentStatus == "freeTrial" || apiM.paymentStatus == "paid" {
+                if apiM.hasFullDiskAccess {
+                    if apiM.firstLoad {
+                        LoadingFirstTimeView()
+                            .frame(width: 400, height: 300, alignment: .center)
+                        FooterView(showRemindMeAfterPrompt: false).padding()
+                    } else if suggestions.count == 0 {
+                        NoSuggestionsView()
+                            .frame(width: 400, height: 300, alignment: .center)
+                        FooterView(showRemindMeAfterPrompt: true).padding()
+                    } else {
+                        if apiM.paymentStatus == "freeTrial" {
+                            FreeTrialView().frame(width: 400, height: 10)
+                        }
+                        List(suggestions) { s in
+                            PersonRow(cmh: s)
+                            Divider()
+                        }
+                        FooterView(showRemindMeAfterPrompt: true).padding()
+                    }
+                } else {
+                    NoAccessView(url: apiM.fullDiskAccessURL)
                         .frame(width: 400, height: 300, alignment: .center)
                     FooterView(showRemindMeAfterPrompt: false).padding()
-                } else if suggestions.count == 0 {
-                    NoSuggestionsView()
-                        .frame(width: 400, height: 300, alignment: .center)
-                    FooterView(showRemindMeAfterPrompt: true).padding()
-                } else {
-                    List(suggestions) { s in
-                        PersonRow(cmh: s)
-                        Divider()
-                    }
-                    FooterView(showRemindMeAfterPrompt: true).padding()
                 }
             } else {
-                NoAccessView(url: apiM.fullDiskAccessURL)
-                    .frame(width: 400, height: 300, alignment: .center)
-                FooterView(showRemindMeAfterPrompt: false).padding()
+                PaymentView()
+                        .frame(width: 400, height: 300, alignment: .center)
+                FooterView(showRemindMeAfterPrompt: false, showSupportEmail: true).padding()
             }
         })
     }
@@ -216,5 +287,12 @@ func convertTime(d: Double) -> String {
     }
     
     let hours = Int(d / 60 / 60)
+    if hours == 0 {
+        return "<1h"
+    }
     return String(hours) + "h"
+}
+
+func isDark() -> Bool {
+    return NSApp.effectiveAppearance.name == NSAppearance.Name.darkAqua
 }

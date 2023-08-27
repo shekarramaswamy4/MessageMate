@@ -13,6 +13,11 @@ class APIManager: ObservableObject {
     @Published var firstLoad = true
     @Published var remindWindow = Constants.defaultRemindWindow
     
+    @Published var paymentStatus = "freeTrial"
+    @Published var initializeUnixSecond = 0.0
+    @Published var paymentURL = ""
+    @Published var paymentError = false
+    
     var fullDiskAccessURL: URL!
     
     var isProcessing = false
@@ -28,17 +33,96 @@ class APIManager: ObservableObject {
         
         remindWindow = defaults.object(forKey: DefaultsConstants.remindWindow) as? Int ?? Constants.defaultRemindWindow
         
+        // Initialize payment variables for first time setup
+        let deviceId = defaults.object(forKey: DefaultsConstants.deviceId) as? String
+        if deviceId == nil {
+            let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            let randomString = (0..<10).map { _ in
+                letters.randomElement()!
+            }
+            defaults.set(String(randomString), forKey: DefaultsConstants.deviceId)
+            
+            let currentDate = Date()
+            let unixTimestamp = currentDate.timeIntervalSince1970
+            defaults.set(unixTimestamp, forKey: DefaultsConstants.initializeUnixSecond)
+            defaults.set(false, forKey: DefaultsConstants.hasPaid)
+            
+            defaults.synchronize()
+        }
+        let storedInitUnixSecond = defaults.object(forKey: DefaultsConstants.initializeUnixSecond) as! Double
+        self.initializeUnixSecond = storedInitUnixSecond
+        
+        let realDeviceId = defaults.object(forKey: DefaultsConstants.deviceId) as! String
+        self.paymentURL = Constants.stripeProdPaymentLink + "?client_reference_id=" + realDeviceId
+
+        PaymentAPI.getPaymentURL(deviceId: realDeviceId) { result in
+            switch result {
+            case .success(let res):
+                DispatchQueue.main.async {
+                    self.paymentURL = res.url
+                }
+            case .failure(let error):
+                // Fallback case
+                self.paymentURL = Constants.stripeProdPaymentLink + "?client_reference_id=" + realDeviceId
+                print(error)
+            }
+        }
+        
         startPerforming()
+        
+        // Wait for all the UI to initialize
+        DispatchQueue.global().async {
+            // Hopefully 1s is fine
+            Thread.sleep(forTimeInterval: 1.5)
+            DispatchQueue.main.async {
+                if let button = statusBarItem.button {
+                    popover.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
+                }
+            }
+        }
     }
     
-    func setRemindWindow(window: Int) {
+    func validatePaymentCode(code: String) {
+        if code.count != 7 {
+            DispatchQueue.main.async {
+                self.paymentError = true
+            }
+            return
+        }
+        let deviceId = defaults.object(forKey: DefaultsConstants.deviceId) as! String
+        PaymentAPI.validatePaymentCode(deviceId: deviceId, paymentCode: code) { result in
+            switch result {
+            case .success(let res):
+                DispatchQueue.main.async {
+                    if res.validated {
+                        self.paymentStatus = "paid"
+                        defaults.set(true, forKey: DefaultsConstants.hasPaid)
+                        defaults.synchronize()
+                        // Forcing a refresh
+                        self.setRemindWindow(window: self.remindWindow, shouldClose: false)
+                    }
+                    self.paymentError = true
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.paymentError = true
+                }
+                // TODO: how to handle error?
+                print("Error: \(error)")
+            }
+        }
+    }
+    
+    func setRemindWindow(window: Int, shouldClose: Bool = true) {
         remindWindow = window
         firstLoad = true
         defaults.set(window, forKey: DefaultsConstants.remindWindow)
         defaults.synchronize()
         
-        popover.performClose(nil)
         DispatchQueue.main.async {
+            if shouldClose {
+                popover.performClose(nil)
+            }
             statusBarItem.setMenuText(title: "💬 (🔄)")
         }
         
@@ -54,7 +138,30 @@ class APIManager: ObservableObject {
     private func startPerforming() {
         DispatchQueue.global().async {
             while true {
-                self.perform()
+                // Check payments
+                let initializeUnixSecond = defaults.object(forKey: DefaultsConstants.initializeUnixSecond) as? Double ?? 0.0
+                let hasPaid = defaults.object(forKey: DefaultsConstants.hasPaid) as? Bool ?? false
+                
+                if hasPaid {
+                    // If paid, perform
+                    DispatchQueue.main.async {
+                        self.paymentStatus = "paid"
+                    }
+                    self.perform()
+                } else {
+                    let diff = Date().timeIntervalSince1970 - initializeUnixSecond
+                    // In seconds
+                    if Int(diff) > Constants.freeTrialDuration * 60 * 60 {
+                        DispatchQueue.main.async {
+                            self.paymentStatus = "needsPayment"
+                            statusBarItem.setMenuText(title: "💬⚠️")
+                        }
+                    } else {
+                        // Still on free trial
+                        self.perform()
+                    }
+                }
+                
                 Thread.sleep(forTimeInterval: 5)
             }
         }
@@ -85,7 +192,7 @@ class APIManager: ObservableObject {
     private func setMenuText() {
         DispatchQueue.main.async {
             if self.suggestionList.data.count == 0 {
-                statusBarItem.setMenuText(title: "💬 (0)")
+                statusBarItem.setMenuText(title: "💬✅")
             } else {
                 statusBarItem.setMenuText(title: "💬 (\(self.suggestionList.data.count))")
             }
@@ -101,7 +208,7 @@ class APIManager: ObservableObject {
         
         DispatchQueue.global().async {
             let data = dataAPI.getData()
-
+            
             DispatchQueue.main.async {
                 self.firstLoad = false
                 

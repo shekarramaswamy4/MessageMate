@@ -22,6 +22,7 @@
 		D0BF815827324D530019F06D /* Suggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF815727324D530019F06D /* Suggestion.swift */; };
 		D0BF815A27324D5B0019F06D /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF815927324D5B0019F06D /* Models.swift */; };
 		D0BF815C27324D640019F06D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF815B27324D640019F06D /* Utils.swift */; };
+		D0E2CA042A983D1A0004B23D /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E2CA032A983D1A0004B23D /* Payment.swift */; };
 		D0E529C92732539B0003D8BF /* Extensions+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E529C82732539B0003D8BF /* Extensions+View.swift */; };
 		D0F8B8CA2738981A00D99737 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F8B8C92738981A00D99737 /* APIManager.swift */; };
 		D0F8B8CD2738B68100D99737 /* HotKey in Frameworks */ = {isa = PBXBuildFile; productRef = D0F8B8CC2738B68100D99737 /* HotKey */; };
@@ -46,6 +47,7 @@
 		D0BF815727324D530019F06D /* Suggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Suggestion.swift; sourceTree = "<group>"; };
 		D0BF815927324D5B0019F06D /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		D0BF815B27324D640019F06D /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		D0E2CA032A983D1A0004B23D /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		D0E529C82732539B0003D8BF /* Extensions+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+View.swift"; sourceTree = "<group>"; };
 		D0F8B8C92738981A00D99737 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		D0F8B8CE273D65F500D99737 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				D0BF815B27324D640019F06D /* Utils.swift */,
 				D0F8B8C92738981A00D99737 /* APIManager.swift */,
 				D0F8B8CE273D65F500D99737 /* Constants.swift */,
+				D0E2CA032A983D1A0004B23D /* Payment.swift */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				D0BF815C27324D640019F06D /* Utils.swift in Sources */,
 				D0BF812C273107230019F06D /* ContentView.swift in Sources */,
 				D0F8B8D2273D6ABB00D99737 /* NSStatusItem+Extensions.swift in Sources */,
+				D0E2CA042A983D1A0004B23D /* Payment.swift in Sources */,
 				D01C146A2A89E0F200210A62 /* EventMonitor.swift in Sources */,
 				D0BF815627324D490019F06D /* Data.swift in Sources */,
 				D0BF8136273107270019F06D /* Nudger_SwiftUI.xcdatamodeld in Sources */,
@@ -357,7 +361,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Nudger-SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = S3P5HRA85C;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -366,6 +370,7 @@
 				INFOPLIST_FILE = "Nudger-SwiftUI/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = MessageMate;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -373,7 +378,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.shekar.Nudger-SwiftUI";
+				PRODUCT_BUNDLE_IDENTIFIER = com.shekar.messagemate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -389,7 +394,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Nudger-SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = S3P5HRA85C;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -398,6 +403,7 @@
 				INFOPLIST_FILE = "Nudger-SwiftUI/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = MessageMate;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -405,7 +411,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.shekar.Nudger-SwiftUI";
+				PRODUCT_BUNDLE_IDENTIFIER = com.shekar.messagemate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
