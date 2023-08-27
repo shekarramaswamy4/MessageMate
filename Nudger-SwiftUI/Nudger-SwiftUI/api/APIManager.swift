@@ -69,6 +69,17 @@ class APIManager: ObservableObject {
         }
         
         startPerforming()
+        
+        // Wait for all the UI to initialize
+        DispatchQueue.global().async {
+            // Hopefully 1s is fine
+            Thread.sleep(forTimeInterval: 1.5)
+            DispatchQueue.main.async {
+                if let button = statusBarItem.button {
+                    popover.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
+                }
+            }
+        }
     }
     
     func validatePaymentCode(code: String) {
@@ -88,7 +99,7 @@ class APIManager: ObservableObject {
                         defaults.set(true, forKey: DefaultsConstants.hasPaid)
                         defaults.synchronize()
                         // Forcing a refresh
-                        self.setRemindWindow(window: self.remindWindow)
+                        self.setRemindWindow(window: self.remindWindow, shouldClose: false)
                     }
                     self.paymentError = true
                 }
@@ -102,14 +113,16 @@ class APIManager: ObservableObject {
         }
     }
     
-    func setRemindWindow(window: Int) {
+    func setRemindWindow(window: Int, shouldClose: Bool = true) {
         remindWindow = window
         firstLoad = true
         defaults.set(window, forKey: DefaultsConstants.remindWindow)
         defaults.synchronize()
         
-        popover.performClose(nil)
         DispatchQueue.main.async {
+            if shouldClose {
+                popover.performClose(nil)
+            }
             statusBarItem.setMenuText(title: "💬 (🔄)")
         }
         
