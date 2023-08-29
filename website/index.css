@@ -62,6 +62,7 @@ video {
   max-width: max(450px, 60vw);
   text-align: center;
   line-height: 1.5em;
+  text-wrap: balance;
 }
 
 .ctas {
