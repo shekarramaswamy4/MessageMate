@@ -89,7 +89,7 @@ async def post_webhook(request: Request):
         
         print("Payment was successful from " + email + " for device " + client_reference_id + " with code " + final_code)
         r = resend.Emails.send({
-            "from": "messagemate@messagemate.io",
+            "from": "messagemate@payments.messagemate.io",
             "to": email,
             "reply_to": "shekar@ramaswamy.org",
             "subject": "Your MessageMate code is " + final_code,
