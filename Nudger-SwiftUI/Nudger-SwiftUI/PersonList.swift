@@ -56,13 +56,13 @@ struct PaymentView: View {
             Text("""
 Your free trial has expired.
 
-Pay $7 once to use MessageMate forever with updates.
+Pay $7 once to use MessageMate forever.
 """).multilineTextAlignment(TextAlignment.center).foregroundColor(textColor())
             Button(action: {NSWorkspace.shared.open(url)}) {
                 Link("Pay Now", destination: url).foregroundColor(isDark() ? Color.black : Color.white)
             }.background(Color.blue).cornerRadius(4)
             Text("""
-After you pay, enter the code you receive by email here:
+After you pay, check your email for a code and enter it here: 
 """).multilineTextAlignment(TextAlignment.center).foregroundColor(textColor())
             TextField("", text: $codeInput)
                 .frame(width: 100)
@@ -90,11 +90,11 @@ struct NoAccessView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 24, content: {
             Text("""
-MessageMate reminds you if you've forgotten to respond to an iMessage.
-
-Your data never leaves your Mac.
+MessageMate reminds you to respond to your iMessages.
 
 Please allow file access to use MessageMate.
+
+Your data is private and never leaves your Mac.
 """).multilineTextAlignment(TextAlignment.center).foregroundColor(textColor())
             Button(action: {NSWorkspace.shared.open(url)}) {
                 Link("Allow Access", destination: url).foregroundColor(isDark() ? Color.black : Color.white)

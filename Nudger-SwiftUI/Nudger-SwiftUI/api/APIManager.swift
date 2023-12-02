@@ -54,7 +54,7 @@ class APIManager: ObservableObject {
         
         let realDeviceId = defaults.object(forKey: DefaultsConstants.deviceId) as! String
         self.paymentURL = Constants.stripeProdPaymentLink + "?client_reference_id=" + realDeviceId
-
+        
         PaymentAPI.getPaymentURL(deviceId: realDeviceId) { result in
             switch result {
             case .success(let res):
@@ -70,15 +70,25 @@ class APIManager: ObservableObject {
         
         startPerforming()
         
-        // Wait for all the UI to initialize
-        DispatchQueue.global().async {
-            // Hopefully 1s is fine
-            Thread.sleep(forTimeInterval: 1.5)
-            DispatchQueue.main.async {
-                if let button = statusBarItem.button {
-                    popover.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
+        let manuallyRestarted = defaults.object(forKey: DefaultsConstants.manuallyTriggeredRestart) as? Bool ?? false
+        
+        // If we didn't manually restart, we can show the popup on initialization
+        if !manuallyRestarted {
+            // Wait for all the UI to initialize
+            DispatchQueue.global().async {
+                // Hopefully 1s is fine
+                // Show the popup on first load, but not when we manually triggered a restart
+                Thread.sleep(forTimeInterval: 1.5)
+                DispatchQueue.main.async {
+                    if let button = statusBarItem.button {
+                        popover.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
+                    }
                 }
             }
+        } else {
+            // If we did manually restart, set the value to false now that we have triggered the manual restart
+            defaults.set(false, forKey: DefaultsConstants.manuallyTriggeredRestart)
+            defaults.synchronize()
         }
     }
     
@@ -165,6 +175,36 @@ class APIManager: ObservableObject {
                 Thread.sleep(forTimeInterval: 5)
             }
         }
+        
+        // Forcibly restart every 8 hours to fix various issues (spacing, cache hits)
+        let defaultSleepTime = 3600 * 8
+        var sleepTime = defaultSleepTime
+        DispatchQueue.global().async {
+            while true {
+                Thread.sleep(forTimeInterval: TimeInterval(sleepTime))
+                
+                // Don't restart if popover is shown, wait 3 min instead
+                DispatchQueue.main.async {
+                    if popover.isShown {
+                        sleepTime = 60 * 3
+                    } else {
+                        sleepTime = defaultSleepTime
+                        
+                        defaults.set(true, forKey: DefaultsConstants.manuallyTriggeredRestart)
+                        defaults.synchronize()
+                        
+                        let url = URL(fileURLWithPath: Bundle.main.resourcePath!)
+                        let path = url.deletingLastPathComponent().deletingLastPathComponent().absoluteString
+                        print("Going to restart on \(path)")
+                        let task = Process()
+                        task.launchPath = "/usr/bin/open"
+                        task.arguments = [path]
+                        task.launch()
+                        exit(0)
+                    }
+                }
+            }
+        }
     }
     
     // dismissSuggestion adds a person to the blocklist in localstorage and
@@ -204,35 +244,40 @@ class APIManager: ObservableObject {
             return
         }
         
-        isProcessing = true
-        
-        DispatchQueue.global().async {
-            let data = dataAPI.getData()
-            
-            DispatchQueue.main.async {
-                self.firstLoad = false
+        DispatchQueue.main.async {
+            // Don't refresh if the popup is open
+            if !popover.isShown {
+                self.isProcessing = true
                 
-                if data == nil {
-                    self.hasFullDiskAccess = false
+                DispatchQueue.global().async {
+                    let data = dataAPI.getData()
                     
                     DispatchQueue.main.async {
-                        statusBarItem.setMenuText(title: "⚠️")
+                        self.firstLoad = false
+                        
+                        if data == nil {
+                            self.hasFullDiskAccess = false
+                            
+                            DispatchQueue.main.async {
+                                statusBarItem.setMenuText(title: "⚠️")
+                            }
+                            
+                            // Purposefully mark processing as not finished because we don't have disk access
+                            return
+                        } else if self.hasFullDiskAccess == false {
+                            // To prevent unecessary re-renders
+                            self.hasFullDiskAccess = true
+                        }
+                        
+                        
+                        let suggestions = suggestionAPI.makeSuggestions(cmh: data!, remindWindow: self.remindWindow)
+                        self.suggestionList = ContactMessageHistoryList(data: suggestions)
+                        
+                        self.setMenuText()
+                        
+                        self.isProcessing = false
                     }
-                    
-                    // Purposefully mark processing as not finished because we don't have disk access
-                    return
-                } else if self.hasFullDiskAccess == false {
-                    // To prevent unecessary re-renders
-                    self.hasFullDiskAccess = true
                 }
-                
-                
-                let suggestions = suggestionAPI.makeSuggestions(cmh: data!, remindWindow: self.remindWindow)
-                self.suggestionList = ContactMessageHistoryList(data: suggestions)
-                
-                self.setMenuText()
-                
-                self.isProcessing = false
             }
         }
     }

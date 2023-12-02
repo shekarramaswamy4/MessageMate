@@ -15,13 +15,14 @@ struct DefaultsConstants {
     static let paymentStatus = "paymentStatus"
     static let initializeUnixSecond = "initializeUnixSecond"
     static let hasPaid = "hasPaid"
+    static let manuallyTriggeredRestart = "manuallyTriggeredRestart"
 }
 
 struct Constants {
     // Hours
     static let defaultRemindWindow = 12
     // Hours
-    static let freeTrialDuration = 24 * 7
+    static let freeTrialDuration = 24 * 6
     
     static let apiUrl = "https://api.messagemate.io"
     
