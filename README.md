@@ -10,7 +10,7 @@ MessageMate asks for full disk access, which means that it can read the contents
 
 You can find the only network requests made in `Payment.swift`.
 
-You can run MessageMate yourself or purchase it for $7 here: [messagemate.io](https://www.messagemate.io). There is a 5 day free trial with no credit card required.
+This used to be a paid product, but I've sunsetted the site. You can run this project directly via xcode if you'd like.
 
 ## Suggestions / bugs / contributions
 
